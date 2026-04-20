@@ -263,7 +263,12 @@
     .save-btn:hover { color: var(--gold); }
 
     .reviews-section { padding: 80px 0; background: var(--dark); border-top: 1px solid var(--dark-border); }
-    .reviews-header { margin-bottom: 56px; }
+    .reviews-header { margin-bottom: 40px; }
+    .reviews-filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+    .reviews-filter-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-right: 8px; white-space: nowrap; }
+    .review-filter-btn { padding: 8px 18px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-family: 'Montserrat', sans-serif; background: none; border: 1px solid var(--dark-border); color: var(--text-muted); cursor: none; transition: border-color .3s, color .3s, background .3s; }
+    .review-filter-btn:hover { border-color: rgba(201,168,76,.4); color: var(--gold); }
+    .review-filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.06); }
     .reviews-score-row { display: flex; gap: 64px; align-items: flex-start; margin-top: 24px; }
     .reviews-score-big { text-align: center; flex-shrink: 0; }
     .score-num { font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 700; line-height: 1; background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -661,8 +666,16 @@
           </div>
         </div>
       </div>
-      <div class="reviews-grid">
-        <div class="review-card reveal">
+      <div class="reviews-filter-bar">
+        <span class="reviews-filter-label">Sort by:</span>
+        <button class="review-filter-btn active" data-sort="relevant">Most Relevant</button>
+        <button class="review-filter-btn" data-sort="recent">Most Recent</button>
+        <button class="review-filter-btn" data-sort="highest">Highest Rating</button>
+        <button class="review-filter-btn" data-sort="lowest">Lowest Rating</button>
+      </div>
+
+      <div class="reviews-grid" id="reviews-grid">
+        <div class="review-card reveal" data-rating="5" data-date="202603" data-relevant="1">
           <div class="review-header">
             <div class="review-avatar">T</div>
             <div><div class="review-name">Tanya M.</div><div class="review-date">March 2026</div></div>
@@ -670,7 +683,7 @@
           </div>
           <p class="review-text">"Absolutely stunning home. Clean, modern, and spacious. Having two bedrooms made it perfect for our trip with family. Golden Key made check-in completely seamless."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.1s">
+        <div class="review-card reveal" data-rating="5" data-date="202602" data-relevant="2">
           <div class="review-header">
             <div class="review-avatar">R</div>
             <div><div class="review-name">Raymond L.</div><div class="review-date">February 2026</div></div>
@@ -678,7 +691,7 @@
           </div>
           <p class="review-text">"Best STR experience I've had in Albany. The kitchen was fully stocked, the beds were super comfortable, and the host responded within minutes every time I messaged."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.2s">
+        <div class="review-card reveal" data-rating="5" data-date="202601" data-relevant="3">
           <div class="review-header">
             <div class="review-avatar">J</div>
             <div><div class="review-name">Jessica W.</div><div class="review-date">January 2026</div></div>
@@ -866,6 +879,24 @@
     btn.textContent = '✓ Request Sent!';
     btn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
     setTimeout(() => { btn.textContent = 'Request to Book'; btn.style.background = ''; }, 3000);
+  });
+
+  // ─── REVIEW FILTER ───
+  document.querySelectorAll('.review-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.review-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const sort = btn.dataset.sort;
+      const grid = document.getElementById('reviews-grid');
+      const cards = Array.from(grid.querySelectorAll('.review-card'));
+      cards.sort((a, b) => {
+        if (sort === 'recent')  return b.dataset.date - a.dataset.date;
+        if (sort === 'highest') return b.dataset.rating - a.dataset.rating;
+        if (sort === 'lowest')  return a.dataset.rating - b.dataset.rating;
+        return a.dataset.relevant - b.dataset.relevant;
+      });
+      cards.forEach(c => grid.appendChild(c));
+    });
   });
 
   (function() {

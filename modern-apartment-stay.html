@@ -493,7 +493,21 @@
 
     /* ─── REVIEWS ─── */
     .reviews-section { padding: 80px 0; background: var(--dark); border-top: 1px solid var(--dark-border); }
-    .reviews-header { margin-bottom: 56px; }
+    .reviews-header { margin-bottom: 40px; }
+    .reviews-filter-bar {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .reviews-filter-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-right: 8px; white-space: nowrap; }
+    .review-filter-btn {
+      padding: 8px 18px; font-size: 11px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; font-family: 'Montserrat', sans-serif;
+      background: none; border: 1px solid var(--dark-border);
+      color: var(--text-muted); cursor: none;
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .review-filter-btn:hover { border-color: rgba(201,168,76,.4); color: var(--gold); }
+    .review-filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.06); }
     .reviews-score-row { display: flex; gap: 64px; align-items: flex-start; margin-top: 24px; }
     .reviews-score-big { text-align: center; flex-shrink: 0; }
     .score-num {
@@ -965,69 +979,59 @@
           </div>
         </div>
       </div>
-      <div class="reviews-grid">
-        <div class="review-card reveal">
+      <div class="reviews-filter-bar">
+        <span class="reviews-filter-label">Sort by:</span>
+        <button class="review-filter-btn active" data-sort="relevant">Most Relevant</button>
+        <button class="review-filter-btn" data-sort="recent">Most Recent</button>
+        <button class="review-filter-btn" data-sort="highest">Highest Rating</button>
+        <button class="review-filter-btn" data-sort="lowest">Lowest Rating</button>
+      </div>
+
+      <div class="reviews-grid" id="reviews-grid">
+        <div class="review-card reveal" data-rating="5" data-date="202603" data-relevant="1">
           <div class="review-header">
             <div class="review-avatar">M</div>
-            <div>
-              <div class="review-name">Maya S.</div>
-              <div class="review-date">March 2026</div>
-            </div>
+            <div><div class="review-name">Maya S.</div><div class="review-date">March 2026</div></div>
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-text">"The warmth and coziness of this apartment is unmatched. The wood accents, the sofa, the soft lighting — it felt like a boutique hotel experience at a fraction of the price. Absolutely will be back."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.1s">
+        <div class="review-card reveal" data-rating="5" data-date="202602" data-relevant="2">
           <div class="review-header">
             <div class="review-avatar">D</div>
-            <div>
-              <div class="review-name">Derek H.</div>
-              <div class="review-date">February 2026</div>
-            </div>
+            <div><div class="review-name">Derek H.</div><div class="review-date">February 2026</div></div>
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-text">"Stayed here for a week on business and it was perfect. The beds were incredibly comfortable, Wi-Fi was fast, and the city views from the window were a great bonus every morning."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.2s">
+        <div class="review-card reveal" data-rating="5" data-date="202601" data-relevant="3">
           <div class="review-header">
             <div class="review-avatar">L</div>
-            <div>
-              <div class="review-name">Lena P.</div>
-              <div class="review-date">January 2026</div>
-            </div>
+            <div><div class="review-name">Lena P.</div><div class="review-date">January 2026</div></div>
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-text">"Golden Key manages every detail flawlessly. The apartment was spotless, check-in was effortless, and John responded to every message within minutes. This is how short-term rentals should be done."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.3s">
+        <div class="review-card reveal" data-rating="5" data-date="202512" data-relevant="4">
           <div class="review-header">
             <div class="review-avatar">K</div>
-            <div>
-              <div class="review-name">Kevin T.</div>
-              <div class="review-date">December 2025</div>
-            </div>
+            <div><div class="review-name">Kevin T.</div><div class="review-date">December 2025</div></div>
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-text">"We traveled with our teenage kids and everyone had enough space. Two beds, a full sofa, and a well-stocked kitchenette made this feel like home. Location was perfect for exploring Honolulu."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.4s">
+        <div class="review-card reveal" data-rating="5" data-date="202511" data-relevant="5">
           <div class="review-header">
             <div class="review-avatar">S</div>
-            <div>
-              <div class="review-name">Simone R.</div>
-              <div class="review-date">November 2025</div>
-            </div>
+            <div><div class="review-name">Simone R.</div><div class="review-date">November 2025</div></div>
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-text">"The bathroom alone deserves five stars — round mirror, beautiful fixtures, everything immaculate. The whole apartment has been so thoughtfully put together. You can tell the management team genuinely cares."</p>
         </div>
-        <div class="review-card reveal" style="transition-delay:.5s">
+        <div class="review-card reveal" data-rating="5" data-date="202510" data-relevant="6">
           <div class="review-header">
             <div class="review-avatar">A</div>
-            <div>
-              <div class="review-name">Andre W.</div>
-              <div class="review-date">October 2025</div>
-            </div>
+            <div><div class="review-name">Andre W.</div><div class="review-date">October 2025</div></div>
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-text">"Best value in Honolulu, full stop. The apartment looks exactly like the photos, the host communicates instantly, and the neighborhood is walkable to everything. Book this — you won't regret it."</p>
@@ -1272,6 +1276,24 @@
       btn.textContent = 'Request to Book';
       btn.style.background = '';
     }, 3000);
+  });
+
+  // ─── REVIEW FILTER ───
+  document.querySelectorAll('.review-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.review-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const sort = btn.dataset.sort;
+      const grid = document.getElementById('reviews-grid');
+      const cards = Array.from(grid.querySelectorAll('.review-card'));
+      cards.sort((a, b) => {
+        if (sort === 'recent')  return b.dataset.date - a.dataset.date;
+        if (sort === 'highest') return b.dataset.rating - a.dataset.rating;
+        if (sort === 'lowest')  return a.dataset.rating - b.dataset.rating;
+        return a.dataset.relevant - b.dataset.relevant;
+      });
+      cards.forEach(c => grid.appendChild(c));
+    });
   });
 
   // ─── LIGHTBOX ───
