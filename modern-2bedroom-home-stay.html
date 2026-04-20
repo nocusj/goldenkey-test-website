@@ -124,7 +124,18 @@
     .gallery-count:hover { background: rgba(201,168,76,.1); border-color: var(--gold); }
 
     .listing-body { padding: 60px 0 100px; }
-    .listing-grid { display: grid; grid-template-columns: 1fr 380px; gap: 64px; align-items: start; }
+    .listing-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      grid-template-areas:
+        "left-top right"
+        "left-bottom right";
+      gap: 64px;
+      align-items: start;
+    }
+    .listing-left-top { grid-area: left-top; }
+    .listing-left-bottom { grid-area: left-bottom; }
+    .listing-right { grid-area: right; }
 
     .listing-header { margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid var(--dark-border); }
     .listing-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
@@ -306,7 +317,13 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 1024px) {
-      .listing-grid { grid-template-columns: 1fr; }
+      .listing-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "left-top"
+          "right"
+          "left-bottom";
+      }
       .booking-widget { position: static; }
       .amenities-grid { grid-template-columns: repeat(2,1fr); }
       .reviews-grid { grid-template-columns: repeat(2,1fr); }
@@ -414,7 +431,7 @@
 
       <div class="listing-grid">
 
-        <div class="listing-left">
+        <div class="listing-left-top">
 
           <div class="listing-header reveal">
             <span class="listing-tag">Entire Place · House</span>
@@ -454,6 +471,10 @@
             <p class="sec-text">Two private bedrooms, a stylish open living space, a fully equipped kitchen, and a pristine bathroom ensure you have everything you need for a comfortable and memorable stay. Whether you're in town for business, exploring the Capital Region, or just passing through, this home delivers comfort and convenience at every turn.</p>
             <p class="sec-text">Ideally located near downtown Albany, the Empire State Plaza, and top dining and entertainment spots — everything the Capital Region has to offer is just minutes away.</p>
           </div>
+
+        </div><!-- end listing-left-top -->
+
+        <div class="listing-left-bottom">
 
           <div class="listing-section reveal">
             <span class="sec-label">What's Included</span>
@@ -509,7 +530,7 @@
             </div>
           </div>
 
-        </div>
+        </div><!-- end listing-left-bottom -->
 
         <!-- BOOKING WIDGET -->
         <div class="listing-right">

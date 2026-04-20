@@ -165,9 +165,15 @@
     .listing-grid {
       display: grid;
       grid-template-columns: 1fr 380px;
+      grid-template-areas:
+        "left-top right"
+        "left-bottom right";
       gap: 64px;
       align-items: start;
     }
+    .listing-left-top { grid-area: left-top; }
+    .listing-left-bottom { grid-area: left-bottom; }
+    .listing-right { grid-area: right; }
 
     /* ─── LEFT COLUMN ─── */
     .listing-header { margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid var(--dark-border); }
@@ -593,7 +599,13 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
-      .listing-grid { grid-template-columns: 1fr; }
+      .listing-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "left-top"
+          "right"
+          "left-bottom";
+      }
       .booking-widget { position: static; }
       .amenities-grid { grid-template-columns: repeat(2,1fr); }
       .reviews-grid { grid-template-columns: repeat(2,1fr); }
@@ -710,8 +722,8 @@
 
       <div class="listing-grid">
 
-        <!-- LEFT: Content -->
-        <div class="listing-left">
+        <!-- LEFT TOP: Header + Description -->
+        <div class="listing-left-top">
 
           <!-- Header -->
           <div class="listing-header reveal">
@@ -753,6 +765,11 @@
             <p class="sec-text">Two comfortable beds, a stylishly appointed living area with a plush sofa, and a modern bathroom with premium fixtures ensure every inch of this apartment delivers comfort. Ideal for couples, business travelers, or small groups up to four guests looking for a step above the ordinary.</p>
             <p class="sec-text">Located minutes from Waikiki Beach, Ala Moana Center, and Diamond Head, you'll have Honolulu's best dining, shopping, and sightseeing right at your doorstep. High-speed Wi-Fi, a fully equipped kitchenette, and smart TV keep you comfortable however long your stay.</p>
           </div>
+
+        </div><!-- end listing-left-top -->
+
+        <!-- LEFT BOTTOM: Amenities + Rules + Location -->
+        <div class="listing-left-bottom">
 
           <!-- Amenities -->
           <div class="listing-section reveal">
@@ -811,7 +828,7 @@
             </div>
           </div>
 
-        </div>
+        </div><!-- end listing-left-bottom -->
 
         <!-- RIGHT: Booking Widget -->
         <div class="listing-right">
