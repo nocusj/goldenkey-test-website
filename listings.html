@@ -372,8 +372,9 @@
       .sg-hero { height: 70vh; }
       .sg-hero-title { font-size: 36px; }
       .sg-grid { grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; }
-      .sg-sticky-col { display: none; }
-      .sg-scroll-col .sg-figure { height: 260px; }
+      .sg-scroll-col,
+      .sg-sticky-col { display: contents; }
+      .sg-figure { height: 200px !important; }
     }
   </style>
 </head>
