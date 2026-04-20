@@ -491,6 +491,38 @@
     /* always show features on featured card */
     .service-card.featured .service-features li { opacity: 1; transform: translateX(0); }
 
+    /* ─── COMMITMENT ─────────────────────────────────── */
+    .commitment { padding: 120px 0; background: var(--dark); }
+    .commitment-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .commitment-item {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      padding: 32px 28px;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: border-color .4s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .commitment-item::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--gradient-gold);
+      transform: scaleX(0); transition: transform .4s ease;
+    }
+    .commitment-item:hover { border-color: rgba(201,168,76,.35); transform: translateY(-4px); }
+    .commitment-item:hover::before { transform: scaleX(1); }
+    .commitment-icon { font-size: 28px; }
+    .commitment-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 600; color: var(--white); line-height: 1.2;
+    }
+    .commitment-desc { font-size: 12px; line-height: 1.7; color: var(--text-muted); }
+    @media (max-width: 1024px) { .commitment-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .commitment-grid { grid-template-columns: 1fr; } }
+
     /* ─── WHY US ──────────────────────────────────────── */
     .why { padding: 120px 0; }
     .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
@@ -899,46 +931,120 @@
         <div class="service-card featured reveal">
           <div class="service-icon-wrap">🔑</div>
           <div class="service-title">Airbnb Arbitrage Management</div>
-          <p class="service-desc">Don't own property? No problem. We master-lease units and manage them as profitable short-term rentals, generating income for everyone involved.</p>
+          <p class="service-desc">We master-lease your property on a 3–5 year agreement and sublease it to vetted corporate clients — giving you guaranteed rent, zero vacancy, and zero hassle.</p>
           <ul class="service-features">
-            <li>Master lease negotiation & structuring</li>
+            <li>3–5 year lease commitment</li>
+            <li>100% occupancy — we always pay rent</li>
             <li>Complete unit furnishing & setup</li>
             <li>Multi-platform listing management</li>
-            <li>Revenue optimization & tracking</li>
           </ul>
         </div>
         <div class="service-card reveal" style="transition-delay:0.12s">
           <div class="service-icon-wrap">🏡</div>
           <div class="service-title">Property Owner Partnership</div>
-          <p class="service-desc">Already own a property? Partner with us to convert it into a top-performing STR without lifting a finger.</p>
+          <p class="service-desc">Our goal is to become your last tenant. We handle everything so your property is a truly passive investment — 100% occupancy, zero turnover, zero vacancy.</p>
           <ul class="service-features">
-            <li>Free earning potential analysis</li>
-            <li>Professional listing creation</li>
             <li>Guaranteed minimum rent options</li>
-            <li>Full maintenance coordination</li>
+            <li>Insurance coverage up to $3M</li>
+            <li>24hr handyman — repairs under $500 on us</li>
+            <li>Professional cleaning 1–2x per week</li>
           </ul>
         </div>
         <div class="service-card reveal" style="transition-delay:0.24s">
-          <div class="service-icon-wrap">🤝</div>
-          <div class="service-title">Guest Experience Management</div>
-          <p class="service-desc">5-star reviews drive bookings. Our team ensures every guest has an exceptional, seamless stay from check-in to checkout.</p>
+          <div class="service-icon-wrap">🛡️</div>
+          <div class="service-title">Property Protection & Security</div>
+          <p class="service-desc">Your property is protected around the clock. Strict house rules, thorough guest screening, and 24hr surveillance keep your asset in pristine condition at all times.</p>
           <ul class="service-features">
-            <li>24/7 guest communication</li>
-            <li>Automated messaging & check-in</li>
-            <li>Professional cleaning coordination</li>
-            <li>Review management & response</li>
+            <li>24hr front, side & rear surveillance</li>
+            <li>Strict rules — no pets, no parties, no smoking</li>
+            <li>Advanced guest screening systems</li>
+            <li>Neighbor & community relationship management</li>
           </ul>
         </div>
         <div class="service-card reveal" style="transition-delay:0.36s">
           <div class="service-icon-wrap">📈</div>
           <div class="service-title">Revenue Optimization</div>
-          <p class="service-desc">Data-driven strategies to maximize your nightly rate, occupancy, and total monthly revenue throughout the year.</p>
+          <p class="service-desc">Data-driven strategies to maximize your nightly rate, occupancy, and total monthly revenue — with full transparency every step of the way.</p>
           <ul class="service-features">
             <li>Dynamic pricing algorithms</li>
             <li>Seasonal demand forecasting</li>
             <li>Competitor benchmarking</li>
             <li>Monthly performance reports</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMMITMENT ═══ -->
+  <section class="commitment" id="commitment">
+    <div class="container">
+      <div class="reveal" style="text-align:center;">
+        <span class="section-label">Our Guarantee to You</span>
+        <h2 class="section-heading">What Every Property Owner<br/><em class="gold-text">Can Count On</em></h2>
+        <div class="divider" style="margin:20px auto 0;"></div>
+        <p class="section-subtext" style="margin:24px auto 0; text-align:center;">We don't just manage properties — we make a commitment. Here's exactly what you get when you partner with Golden Key.</p>
+      </div>
+      <div class="commitment-grid">
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🏢</div>
+          <div class="commitment-title">You're Working With a Company</div>
+          <p class="commitment-desc">Golden Key Dynamic Resources is a licensed business — not an individual. You get the accountability, professionalism, and systems of a full company behind your property.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">📋</div>
+          <div class="commitment-title">3–5 Year Lease Commitment</div>
+          <p class="commitment-desc">We sign a long-term master lease — 3 to 5 years. No short-term experiments. We're committed to your property for the long haul.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🚫</div>
+          <div class="commitment-title">Strict House Rules — Always</div>
+          <p class="commitment-desc">No pets. No events or parties. No smoking. No noise after 9:30pm. These rules are non-negotiable and enforced with every single guest.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">📷</div>
+          <div class="commitment-title">24hr Surveillance</div>
+          <p class="commitment-desc">Cameras installed on the front, side, and rear of every property. Your home is monitored around the clock — 24 hours a day, 7 days a week.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🛡️</div>
+          <div class="commitment-title">Up to $3M Insurance Coverage</div>
+          <p class="commitment-desc">We carry comprehensive insurance coverage up to $3 million, plus additional short-term rental insurance through Proper.Insure for complete protection.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🧹</div>
+          <div class="commitment-title">Professional Cleanings Weekly</div>
+          <p class="commitment-desc">Professional cleaners come in 1–2 times per week. Your property is always kept in pristine, hotel-quality condition — no exceptions.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🔧</div>
+          <div class="commitment-title">24hr Handyman — On Us</div>
+          <p class="commitment-desc">We handle all repairs under $500 ourselves — you'll never get a maintenance call from us. A 24hr handyman is always on standby for your property.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🔍</div>
+          <div class="commitment-title">Advanced Guest Screening</div>
+          <p class="commitment-desc">Robust systems for screening and protecting your home. Only verified, vetted guests and corporate clients are placed in your property.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🤝</div>
+          <div class="commitment-title">Landlord & Neighbor Relations</div>
+          <p class="commitment-desc">We personally introduce ourselves to your neighbors, give them our contact info, and build trust in the community — so your property is always welcome.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🔗</div>
+          <div class="commitment-title">Long-Term Relationship First</div>
+          <p class="commitment-desc">Our business is built on lasting partnerships. We grow with our landlords and aim to manage multiple properties together as you expand your portfolio.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">🎯</div>
+          <div class="commitment-title">Goal: Your Last Tenant</div>
+          <p class="commitment-desc">We don't want to be just another tenant. Our goal is to be your final one — eliminating turnover, vacancy, and stress from your life permanently.</p>
+        </div>
+        <div class="commitment-item reveal">
+          <div class="commitment-icon">💯</div>
+          <div class="commitment-title">100% Occupancy, Zero Vacancy</div>
+          <p class="commitment-desc">Whether we have guests or not, we always pay your rent. 100% occupancy guaranteed — you'll never lose a month of income again.</p>
         </div>
       </div>
     </div>
@@ -984,29 +1090,29 @@
             <div class="why-point reveal" style="transition-delay:0.1s">
               <div class="why-point-icon">🏆</div>
               <div class="why-point-body">
-                <div class="why-point-title">Local Albany Expertise</div>
-                <p class="why-point-desc">Deep knowledge of the Albany, NY market — local events, peak seasons, and guest preferences that boost your bookings.</p>
+                <div class="why-point-title">We Become Your Last Tenant</div>
+                <p class="why-point-desc">Our goal is a 3–5 year partnership — 100% occupancy, zero vacancy, and you'll never deal with turnover again. We always pay rent, whether we have guests or not.</p>
               </div>
             </div>
             <div class="why-point reveal" style="transition-delay:0.2s">
               <div class="why-point-icon">🔒</div>
               <div class="why-point-body">
-                <div class="why-point-title">Risk-Free for Property Owners</div>
-                <p class="why-point-desc">We offer guaranteed minimum rent options, so you earn consistently whether your unit is booked or not.</p>
+                <div class="why-point-title">Up to $3M Insurance Coverage</div>
+                <p class="why-point-desc">We carry comprehensive insurance coverage up to $3 million, plus additional short-term rental insurance — your asset is fully protected at all times.</p>
               </div>
             </div>
             <div class="why-point reveal" style="transition-delay:0.3s">
-              <div class="why-point-icon">📱</div>
+              <div class="why-point-icon">🛠️</div>
               <div class="why-point-body">
-                <div class="why-point-title">Full Transparency</div>
-                <p class="why-point-desc">Real-time dashboards and monthly reports give you complete visibility into bookings, revenue, and expenses.</p>
+                <div class="why-point-title">24hr Handyman — Never Bother You</div>
+                <p class="why-point-desc">We handle all repairs under $500 ourselves. A 24hr handyman is always on call, so you'll never get an unexpected maintenance call from us.</p>
               </div>
             </div>
             <div class="why-point reveal" style="transition-delay:0.4s">
               <div class="why-point-icon">⚡</div>
               <div class="why-point-body">
                 <div class="why-point-title">Fast Launch — 30 Days</div>
-                <p class="why-point-desc">From signed agreement to live listing in 30 days or less. We move fast so you start earning sooner.</p>
+                <p class="why-point-desc">From signed agreement to live listing in 30 days or less. Professional photography, staging, and multi-platform setup — we move fast so you start earning sooner.</p>
               </div>
             </div>
           </div>
