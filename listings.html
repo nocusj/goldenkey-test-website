@@ -272,12 +272,13 @@
     .footer-copy span { color:var(--gold); }
 
     /* ─── STICKY GALLERY ─────────────────────────────── */
+    .sg-hero-wrap { height: 100vh; }
     .sg-hero {
       position: sticky; top: 0;
       height: 100vh;
       background: var(--black);
       display: grid; place-content: center;
-      z-index: 2; text-align: center;
+      text-align: center;
       overflow: hidden;
     }
     .sg-hero::before {
@@ -423,6 +424,7 @@
   </div>
 
   <!-- STICKY GALLERY -->
+  <div class="sg-hero-wrap">
   <div class="sg-hero">
     <div class="sg-hero-inner">
       <span class="sg-hero-label">Our Portfolio</span>
@@ -430,6 +432,7 @@
       <span class="sg-hero-arrow">↓</span>
     </div>
   </div>
+  </div><!-- /sg-hero-wrap -->
 
   <section class="sg-section">
     <div class="sg-grid">
