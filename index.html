@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Key Dynamic Resources | Short-Term Rental Management</title>
+  <meta name="description" content="Golden Key Dynamic Resources specializes in Airbnb arbitrage and short-term rental management. We turn your property into a high-performing revenue stream." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:        #C9A84C;
+      --gold-light:  #E8C96A;
+      --gold-dark:   #9E7B2F;
+      --black:       #0A0A0A;
+      --dark:        #111111;
+      --dark-card:   #181818;
+      --dark-border: #2A2A2A;
+      --white:       #FFFFFF;
+      --text-muted:  #888888;
+      --text-light:  #CCCCCC;
+      --gradient-gold: linear-gradient(135deg, #C9A84C 0%, #E8C96A 50%, #C9A84C 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ───────────────────────────────── */
+    #cursor-dot {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, opacity 0.3s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201, 168, 76, 0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    body.hovering #cursor-dot { width: 12px; height: 12px; }
+    body.hovering #cursor-ring { width: 56px; height: 56px; border-color: rgba(201,168,76,0.8); }
+
+    /* ─── SCROLL PROGRESS ─────────────────────────────── */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--gradient-gold);
+      z-index: 9997;
+      transition: width 0.1s linear;
+    }
+
+    /* ─── UTILITY ─────────────────────────────────────── */
+    .gold-text {
+      background: linear-gradient(135deg, #C9A84C 0%, #E8C96A 40%, #F5D98B 60%, #C9A84C 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px; display: block;
+    }
+    .section-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 600; line-height: 1.15; color: var(--white);
+    }
+    .section-subtext {
+      font-size: 15px; line-height: 1.8;
+      color: var(--text-muted); max-width: 560px;
+    }
+    .divider {
+      width: 60px; height: 2px;
+      background: var(--gradient-gold);
+      margin: 20px 0 32px;
+      position: relative; overflow: hidden;
+    }
+    .divider::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.6);
+      transform: translateX(-100%);
+      animation: sweep 2.5s ease infinite 1s;
+    }
+    @keyframes sweep {
+      0% { transform: translateX(-100%); }
+      60%, 100% { transform: translateX(200%); }
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gradient-gold);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 16px 36px; border: none; cursor: none;
+      text-decoration: none; position: relative; overflow: hidden;
+      transition: all 0.3s ease;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.15);
+      transform: translateX(-100%) skewX(-20deg);
+      transition: transform 0.5s ease;
+    }
+    .btn-primary:hover::before { transform: translateX(200%) skewX(-20deg); }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(201, 168, 76, 0.4);
+    }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px 35px; border: 1px solid var(--gold);
+      cursor: none; text-decoration: none;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .btn-outline::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(201,168,76,0.08);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .btn-outline:hover::before { transform: scaleX(1); }
+    .btn-outline:hover { transform: translateY(-3px); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000; padding: 24px 0;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(10, 10, 10, 0.96);
+      padding: 16px 0;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--dark-border);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.5);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: none; }
+    .nav-logo img { height: 44px; width: auto; object-fit: contain; }
+    .nav-logo-text .name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 700;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: 1px;
+    }
+    .nav-logo-text .sub {
+      font-size: 8px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted);
+    }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--text-light); text-decoration: none;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s; cursor: none; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { margin-left: 16px; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: none; background: none; border: none; padding: 4px;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--gold); transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0;
+      background: var(--black); z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .mobile-menu.open { display: flex; opacity: 1; }
+    .mobile-menu a {
+      color: var(--white); text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px; font-weight: 600;
+      transition: color 0.3s; cursor: none;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close {
+      position: absolute; top: 28px; right: 40px;
+      background: none; border: none; color: var(--gold); font-size: 32px; cursor: none;
+    }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 120px 0 80px;
+    }
+    #hero-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201, 168, 76, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 10% 80%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+        var(--black);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+      animation: gridFloat 20s ease-in-out infinite;
+    }
+    @keyframes gridFloat {
+      0%, 100% { background-position: 0 0, 0 0; }
+      50% { background-position: 30px 30px, 30px 30px; }
+    }
+    .hero-accent-line {
+      position: absolute; top: 0; right: 120px;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent 0%, var(--gold) 50%, transparent 100%);
+      opacity: 0;
+      animation: lineReveal 1.5s ease forwards 0.5s;
+    }
+    .hero-accent-line-2 {
+      position: absolute; top: 0; right: 240px;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.2) 50%, transparent 100%);
+      opacity: 0;
+      animation: lineReveal 1.5s ease forwards 0.8s;
+    }
+    @keyframes lineReveal {
+      0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      100% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+    /* Hero entrance animations */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      padding: 8px 20px; margin-bottom: 36px;
+      font-size: 10px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      opacity: 0; transform: translateY(-20px);
+      animation: heroFadeDown 0.8s ease forwards 0.3s;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201,168,76,0.4); } 50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(201,168,76,0); } }
+    @keyframes heroFadeDown { to { opacity: 1; transform: translateY(0); } }
+    @keyframes heroFadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 600; line-height: 1.05; margin-bottom: 28px;
+    }
+    .hero-title .line {
+      display: block; overflow: hidden;
+    }
+    .hero-title .line-inner {
+      display: block;
+      opacity: 0; transform: translateY(100%);
+      animation: lineUp 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .hero-title .line:nth-child(1) .line-inner { animation-delay: 0.5s; }
+    .hero-title .line:nth-child(2) .line-inner { animation-delay: 0.65s; }
+    .hero-title .line:nth-child(3) .line-inner { animation-delay: 0.8s; }
+    @keyframes lineUp { to { opacity: 1; transform: translateY(0); } }
+
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #C9A84C 0%, #E8C96A 40%, #F5D98B 60%, #C9A84C 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .hero-desc {
+      font-size: 16px; line-height: 1.8; color: var(--text-muted);
+      max-width: 540px; margin-bottom: 44px;
+      opacity: 0; transform: translateY(20px);
+      animation: heroFadeUp 0.8s ease forwards 1s;
+    }
+    .hero-actions {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+      opacity: 0; transform: translateY(20px);
+      animation: heroFadeUp 0.8s ease forwards 1.2s;
+    }
+    .hero-stats {
+      display: flex; gap: 48px;
+      margin-top: 72px; padding-top: 48px;
+      border-top: 1px solid var(--dark-border);
+      opacity: 0; transform: translateY(20px);
+      animation: heroFadeUp 0.8s ease forwards 1.4s;
+    }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px; font-weight: 700;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1;
+    }
+    .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; margin-top: 6px; }
+
+    /* ─── TRUSTED ──────────────────────────────────────── */
+    .trusted {
+      padding: 40px 0;
+      border-top: 1px solid var(--dark-border);
+      border-bottom: 1px solid var(--dark-border);
+    }
+    .trusted-inner { display: flex; align-items: center; gap: 48px; overflow: hidden; }
+    .trusted-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-muted); white-space: nowrap; flex-shrink: 0;
+    }
+    .trusted-logos { display: flex; gap: 48px; align-items: center; }
+    .platform-badge {
+      display: flex; align-items: center; gap: 8px;
+      opacity: 0.4; transition: opacity 0.4s, transform 0.4s;
+      white-space: nowrap;
+    }
+    .platform-badge:hover { opacity: 0.9; transform: translateY(-2px); }
+    .platform-badge svg { width: 20px; height: 20px; }
+    .platform-badge span { font-size: 13px; font-weight: 600; color: var(--white); letter-spacing: 0.5px; }
+
+    /* ─── HOW IT WORKS ────────────────────────────────── */
+    .how { padding: 120px 0; }
+    .how-header { text-align: center; margin-bottom: 80px; }
+    .how-header .divider { margin: 20px auto 0; }
+    .how-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; position: relative;
+    }
+    .how-steps::before {
+      content: ''; position: absolute;
+      top: 40px; left: 12.5%; right: 12.5%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0;
+      animation: lineDrawH 1s ease forwards 0.3s;
+    }
+    @keyframes lineDrawH {
+      0% { opacity: 0; clip-path: inset(0 100% 0 0); }
+      100% { opacity: 0.4; clip-path: inset(0 0% 0 0); }
+    }
+    .step-card {
+      background: var(--dark-card); padding: 40px 32px;
+      border: 1px solid var(--dark-border);
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+      position: relative; transform-style: preserve-3d;
+    }
+    .step-card:hover {
+      border-color: rgba(201,168,76,0.4);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1);
+    }
+    .step-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--gradient-gold);
+      transform: scaleX(0); transition: transform 0.4s ease;
+    }
+    .step-card:hover::before { transform: scaleX(1); }
+    .step-number {
+      font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 700;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      opacity: 0.25; line-height: 1; margin-bottom: 20px;
+    }
+    .step-icon {
+      width: 48px; height: 48px; border: 1px solid var(--dark-border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; font-size: 22px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .step-card:hover .step-icon { border-color: var(--gold-dark); transform: scale(1.1) rotate(-5deg); }
+    .step-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 22px;
+      font-weight: 600; color: var(--white); margin-bottom: 12px;
+    }
+    .step-desc { font-size: 13px; line-height: 1.7; color: var(--text-muted); }
+
+    /* ─── SERVICES ────────────────────────────────────── */
+    .services { padding: 120px 0; background: var(--dark); }
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 64px; }
+    .service-card {
+      background: var(--dark-card); padding: 48px 44px;
+      border: 1px solid var(--dark-border);
+      position: relative; overflow: hidden;
+      transition: border-color 0.4s, transform 0.4s;
+      transform-style: preserve-3d;
+    }
+    .service-card::before {
+      content: ''; position: absolute;
+      top: -100%; left: -100%;
+      width: 80px; height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.06), transparent);
+      transform: skewX(-20deg); transition: none;
+    }
+    .service-card:hover::before {
+      animation: cardShine 0.6s ease forwards;
+    }
+    @keyframes cardShine {
+      to { left: 200%; }
+    }
+    .service-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--gradient-gold);
+      transform: scaleX(0); transition: transform 0.4s ease;
+    }
+    .service-card:hover::after { transform: scaleX(1); }
+    .service-card:hover { border-color: rgba(201, 168, 76, 0.35); }
+    .service-icon-wrap {
+      width: 56px; height: 56px; border: 1px solid var(--dark-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 28px;
+      transition: border-color 0.3s, transform 0.5s, background 0.3s;
+    }
+    .service-card:hover .service-icon-wrap {
+      border-color: var(--gold-dark);
+      transform: rotateY(360deg);
+    }
+    .service-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 24px;
+      font-weight: 600; color: var(--white); margin-bottom: 14px;
+    }
+    .service-desc { font-size: 13px; line-height: 1.75; color: var(--text-muted); margin-bottom: 24px; }
+    .service-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .service-features li {
+      font-size: 12px; color: var(--text-light);
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transform: translateX(-10px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .service-card:hover .service-features li { opacity: 1; transform: translateX(0); }
+    .service-card:hover .service-features li:nth-child(1) { transition-delay: 0.05s; }
+    .service-card:hover .service-features li:nth-child(2) { transition-delay: 0.1s; }
+    .service-card:hover .service-features li:nth-child(3) { transition-delay: 0.15s; }
+    .service-card:hover .service-features li:nth-child(4) { transition-delay: 0.2s; }
+    .service-features li::before {
+      content: ''; width: 16px; height: 1px; background: var(--gold); flex-shrink: 0;
+    }
+    .service-card.featured {
+      background: linear-gradient(135deg, #1A1500 0%, #111111 100%);
+      border-color: rgba(201, 168, 76, 0.25);
+    }
+    /* always show features on featured card */
+    .service-card.featured .service-features li { opacity: 1; transform: translateX(0); }
+
+    /* ─── WHY US ──────────────────────────────────────── */
+    .why { padding: 120px 0; }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .why-visual { position: relative; }
+    .why-main-box {
+      background: var(--dark-card); border: 1px solid var(--dark-border);
+      padding: 48px; position: relative;
+      animation: boxGlow 4s ease-in-out infinite;
+    }
+    @keyframes boxGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+      50% { box-shadow: 0 0 40px rgba(201,168,76,0.08); }
+    }
+    .why-main-box::before {
+      content: ''; position: absolute;
+      top: 12px; left: 12px; right: -12px; bottom: -12px;
+      border: 1px solid rgba(201, 168, 76, 0.15); z-index: -1;
+    }
+    .roi-display { text-align: center; padding: 32px 0; }
+    .roi-number {
+      font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 700;
+      background: linear-gradient(135deg, #C9A84C 0%, #E8C96A 40%, #F5D98B 60%, #C9A84C 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: shimmer 4s linear infinite; line-height: 1;
+    }
+    .roi-label {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 8px;
+    }
+    .roi-divider { width: 100%; height: 1px; background: var(--dark-border); margin: 32px 0; }
+    .roi-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .roi-metric-val {
+      font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--gold);
+    }
+    .roi-metric-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 4px; }
+    .why-points { display: flex; flex-direction: column; gap: 32px; margin-top: 48px; }
+    .why-point { display: flex; gap: 20px; align-items: flex-start; }
+    .why-point-icon {
+      width: 44px; height: 44px; border: 1px solid var(--dark-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+      transition: border-color 0.3s, transform 0.4s, background 0.3s;
+    }
+    .why-point:hover .why-point-icon {
+      border-color: var(--gold-dark);
+      transform: scale(1.1);
+      background: rgba(201,168,76,0.05);
+    }
+    .why-point-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 18px;
+      font-weight: 600; color: var(--white); margin-bottom: 6px;
+      transition: color 0.3s;
+    }
+    .why-point:hover .why-point-title { color: var(--gold-light); }
+    .why-point-desc { font-size: 13px; line-height: 1.7; color: var(--text-muted); }
+
+    /* ─── TESTIMONIALS ────────────────────────────────── */
+    .testimonials { padding: 120px 0; background: var(--dark); }
+    .testimonials-header { text-align: center; margin-bottom: 72px; }
+    .testimonials-header .divider { margin: 20px auto 0; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .testimonial-card {
+      background: var(--dark-card); border: 1px solid var(--dark-border);
+      padding: 40px; position: relative; overflow: hidden;
+      transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+    }
+    .testimonial-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(201,168,76,0.04) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .testimonial-card:hover::before { opacity: 1; }
+    .testimonial-card:hover {
+      border-color: rgba(201, 168, 76, 0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif; font-size: 80px;
+      line-height: 0.6; color: var(--gold); opacity: 0.2;
+      margin-bottom: 24px; display: block;
+    }
+    .testimonial-text {
+      font-size: 14px; line-height: 1.8; color: var(--text-light);
+      font-style: italic; margin-bottom: 32px;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; }
+    .author-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--gradient-gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700;
+      color: var(--black); flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .testimonial-card:hover .author-avatar { transform: scale(1.1); }
+    .author-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .author-role { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .stars {
+      color: var(--gold); font-size: 12px; letter-spacing: 2px; margin-bottom: 16px;
+      display: flex; gap: 4px;
+    }
+    .star { display: inline-block; animation: starPop 0.4s ease both; }
+    .star:nth-child(1) { animation-delay: 0.0s; }
+    .star:nth-child(2) { animation-delay: 0.08s; }
+    .star:nth-child(3) { animation-delay: 0.16s; }
+    .star:nth-child(4) { animation-delay: 0.24s; }
+    .star:nth-child(5) { animation-delay: 0.32s; }
+    @keyframes starPop {
+      0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+      60% { transform: scale(1.3) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* ─── CTA BAND ────────────────────────────────────── */
+    .cta-band {
+      padding: 100px 0;
+      background: linear-gradient(135deg, #0E0B00 0%, #111111 50%, #0E0B00 100%);
+      border-top: 1px solid rgba(201, 168, 76, 0.2);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .cta-orbs { position: absolute; inset: 0; pointer-events: none; }
+    .cta-orb {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      animation: orbFloat linear infinite;
+    }
+    @keyframes orbFloat {
+      0% { transform: translateY(0) scale(1); opacity: 0.6; }
+      50% { transform: translateY(-40px) scale(1.1); opacity: 0.8; }
+      100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    }
+    .cta-band .container { position: relative; z-index: 1; }
+    .cta-band .section-heading { margin-bottom: 16px; }
+    .cta-band .section-subtext { margin: 0 auto 44px; text-align: center; }
+    .cta-actions { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+    /* ─── CONTACT ─────────────────────────────────────── */
+    .contact { padding: 120px 0; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+    .contact-item { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 36px; }
+    .contact-icon {
+      width: 44px; height: 44px; border: 1px solid var(--dark-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .contact-item:hover .contact-icon { border-color: var(--gold-dark); transform: rotate(-10deg) scale(1.1); }
+    .contact-item-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .contact-item-value { font-size: 15px; color: var(--white); font-weight: 500; }
+    .contact-item-value a { color: var(--white); text-decoration: none; transition: color 0.3s; }
+    .contact-item-value a:hover { color: var(--gold); }
+    .contact-form { background: var(--dark-card); border: 1px solid var(--dark-border); padding: 48px; }
+    .form-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 28px;
+      font-weight: 600; color: var(--white); margin-bottom: 32px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+    .form-group:focus-within label { color: var(--gold); }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: var(--black); border: 1px solid var(--dark-border);
+      color: var(--white); font-family: 'Montserrat', sans-serif;
+      font-size: 13px; padding: 14px 16px; outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s; appearance: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--gold-dark);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+    }
+    .form-group select option { background: var(--dark); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-submit { width: 100%; margin-top: 8px; justify-content: center; clip-path: none; }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer { background: var(--dark); border-top: 1px solid var(--dark-border); padding: 64px 0 32px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 64px; margin-bottom: 48px; }
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; text-decoration: none; cursor: none; }
+    .footer-logo img { height: 40px; }
+    .footer-logo-text .name {
+      font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 700;
+      background: var(--gradient-gold);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .footer-logo-text .sub { font-size: 7px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+    .footer-desc { font-size: 13px; line-height: 1.7; color: var(--text-muted); margin-bottom: 24px; max-width: 300px; }
+    .footer-col-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 13px;
+      transition: color 0.3s, padding-left 0.3s; cursor: none; display: block;
+    }
+    .footer-links a:hover { color: var(--gold); padding-left: 8px; }
+    .footer-bottom {
+      padding-top: 32px; border-top: 1px solid var(--dark-border);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-copy { font-size: 11px; color: var(--text-muted); }
+    .footer-copy span { color: var(--gold); }
+
+    /* ─── SCROLL REVEAL ───────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.from-left { transform: translateX(-40px); }
+    .reveal.from-right { transform: translateX(40px); }
+    .reveal.visible { opacity: 1; transform: translate(0,0); }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .how-steps { grid-template-columns: 1fr 1fr; }
+      .how-steps::before { display: none; }
+      .why-grid { grid-template-columns: 1fr; gap: 48px; }
+      .why-main-box::before { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .services-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .trusted-inner { gap: 24px; }
+      .trusted-logos { gap: 24px; flex-wrap: wrap; }
+      body { cursor: auto; }
+      #cursor-dot, #cursor-ring { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <!-- Scroll progress -->
+  <div id="scroll-progress"></div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">
+          <img src="brand_assets/Color logo - no background.png" alt="Golden Key Dynamic Resources" />
+        </a>
+        <ul class="nav-links">
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="listings.html">Properties</a></li>
+          <li><a href="#why-us">Why Us</a></li>
+          <li><a href="#testimonials">Results</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="btn-primary nav-cta">Get Started</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ═══ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">&times;</button>
+    <a href="#how-it-works" class="mobile-link">How It Works</a>
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="listings.html" class="mobile-link">Properties</a>
+    <a href="#why-us" class="mobile-link">Why Us</a>
+    <a href="#testimonials" class="mobile-link">Results</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#contact" class="btn-primary" style="margin-top:16px;">Get Started</a>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-accent-line"></div>
+    <div class="hero-accent-line-2"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">Founded by John Nocus · Albany's Premier STR Partner</div>
+        <h1 class="hero-title">
+          <span class="line"><span class="line-inner">Unlock the</span></span>
+          <span class="line"><span class="line-inner"><em>Golden Potential</em></span></span>
+          <span class="line"><span class="line-inner">of Short-Term Rentals</span></span>
+        </h1>
+        <p class="hero-desc">
+          We specialize in Airbnb arbitrage and full-service short-term rental management — transforming properties into high-performing revenue streams so you can earn more with zero hassle.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">
+            <span>Start Earning More</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#how-it-works" class="btn-outline">See How It Works</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number" data-count="3" data-suffix="×">3×</div>
+            <div class="stat-label">Avg. Revenue vs. Long-Term</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="90" data-suffix="%">90%</div>
+            <div class="stat-label">Avg. Occupancy Rate</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Guest Support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRUSTED BY ═══ -->
+  <section class="trusted">
+    <div class="container">
+      <div class="trusted-inner">
+        <span class="trusted-label">Listed On</span>
+        <div class="trusted-logos">
+          <div class="platform-badge">
+            <svg viewBox="0 0 24 24" fill="#FF5A5F"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.868 16.776c-.225.337-.548.576-.926.676-.378.1-.779.062-1.13-.107l-3.52-1.76a.5.5 0 0 1-.292-.45V7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6.734l2.904 1.452c.618.309.869 1.07.564 1.688a1.28 1.28 0 0 1-.6.602z"/></svg>
+            <span>Airbnb</span>
+          </div>
+          <div class="platform-badge">
+            <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="3" fill="#003580"/><text x="3" y="16" font-size="9" fill="white" font-weight="bold" font-family="sans-serif">VRBO</text></svg>
+            <span>VRBO</span>
+          </div>
+          <div class="platform-badge">
+            <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#003580"/><text x="4" y="17" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">B.</text></svg>
+            <span>Booking.com</span>
+          </div>
+          <div class="platform-badge">
+            <svg viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#1C3144"/><text x="5" y="17" font-size="11" fill="#C9A84C" font-weight="bold" font-family="sans-serif">DI</text></svg>
+            <span>Direct Bookings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="how" id="how-it-works">
+    <div class="container">
+      <div class="how-header reveal">
+        <span class="section-label">The Process</span>
+        <h2 class="section-heading">From Property to<br/><em class="gold-text">Profitable Listing</em></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="how-steps">
+        <div class="step-card reveal">
+          <div class="step-number">01</div>
+          <div class="step-icon">🏠</div>
+          <div class="step-title">Property Analysis</div>
+          <p class="step-desc">We evaluate your property's earning potential using market data, seasonality trends, and local demand signals.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.12s">
+          <div class="step-number">02</div>
+          <div class="step-icon">✨</div>
+          <div class="step-title">Setup & Staging</div>
+          <p class="step-desc">Professional photography, interior design coordination, and listing optimization across all major platforms.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.24s">
+          <div class="step-number">03</div>
+          <div class="step-icon">📊</div>
+          <div class="step-title">Dynamic Pricing</div>
+          <p class="step-desc">AI-powered pricing adjusts daily to maximize revenue — always competitive, never leaving money on the table.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.36s">
+          <div class="step-number">04</div>
+          <div class="step-icon">💰</div>
+          <div class="step-title">Passive Income</div>
+          <p class="step-desc">Sit back and collect. We handle guests, cleaning, maintenance coordination, and monthly reporting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICES ═══ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">What We Offer</span>
+        <h2 class="section-heading">Full-Service STR<br/><em class="gold-text">Management</em></h2>
+        <div class="divider"></div>
+        <p class="section-subtext">Everything you need to maximize your short-term rental income — handled from end to end by our expert team.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card featured reveal">
+          <div class="service-icon-wrap">🔑</div>
+          <div class="service-title">Airbnb Arbitrage Management</div>
+          <p class="service-desc">Don't own property? No problem. We master-lease units and manage them as profitable short-term rentals, generating income for everyone involved.</p>
+          <ul class="service-features">
+            <li>Master lease negotiation & structuring</li>
+            <li>Complete unit furnishing & setup</li>
+            <li>Multi-platform listing management</li>
+            <li>Revenue optimization & tracking</li>
+          </ul>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.12s">
+          <div class="service-icon-wrap">🏡</div>
+          <div class="service-title">Property Owner Partnership</div>
+          <p class="service-desc">Already own a property? Partner with us to convert it into a top-performing STR without lifting a finger.</p>
+          <ul class="service-features">
+            <li>Free earning potential analysis</li>
+            <li>Professional listing creation</li>
+            <li>Guaranteed minimum rent options</li>
+            <li>Full maintenance coordination</li>
+          </ul>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.24s">
+          <div class="service-icon-wrap">🤝</div>
+          <div class="service-title">Guest Experience Management</div>
+          <p class="service-desc">5-star reviews drive bookings. Our team ensures every guest has an exceptional, seamless stay from check-in to checkout.</p>
+          <ul class="service-features">
+            <li>24/7 guest communication</li>
+            <li>Automated messaging & check-in</li>
+            <li>Professional cleaning coordination</li>
+            <li>Review management & response</li>
+          </ul>
+        </div>
+        <div class="service-card reveal" style="transition-delay:0.36s">
+          <div class="service-icon-wrap">📈</div>
+          <div class="service-title">Revenue Optimization</div>
+          <p class="service-desc">Data-driven strategies to maximize your nightly rate, occupancy, and total monthly revenue throughout the year.</p>
+          <ul class="service-features">
+            <li>Dynamic pricing algorithms</li>
+            <li>Seasonal demand forecasting</li>
+            <li>Competitor benchmarking</li>
+            <li>Monthly performance reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHY US ═══ -->
+  <section class="why" id="why-us">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-visual reveal from-left">
+          <div class="why-main-box">
+            <div class="roi-display">
+              <div class="roi-number" data-count="3" data-suffix="×">3×</div>
+              <div class="roi-label">Average Revenue vs. Traditional Rental</div>
+            </div>
+            <div class="roi-divider"></div>
+            <div class="roi-metrics">
+              <div class="roi-metric">
+                <div class="roi-metric-val counter" data-count="90" data-suffix="%+">90%+</div>
+                <div class="roi-metric-label">Avg. Occupancy</div>
+              </div>
+              <div class="roi-metric">
+                <div class="roi-metric-val">$200+</div>
+                <div class="roi-metric-label">Avg. Nightly Rate</div>
+              </div>
+              <div class="roi-metric">
+                <div class="roi-metric-val">5★</div>
+                <div class="roi-metric-label">Guest Rating</div>
+              </div>
+              <div class="roi-metric">
+                <div class="roi-metric-val counter" data-count="30" data-suffix=" Day">30 Day</div>
+                <div class="roi-metric-label">Launch Timeline</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="why-content reveal from-right" style="transition-delay:0.15s">
+          <span class="section-label">Why Golden Key</span>
+          <h2 class="section-heading">We Treat Your<br/><em class="gold-text">Property Like Ours</em></h2>
+          <div class="divider"></div>
+          <p class="section-subtext">We're not just property managers. We're revenue partners — and our success is tied directly to yours.</p>
+          <div class="why-points">
+            <div class="why-point reveal" style="transition-delay:0.1s">
+              <div class="why-point-icon">🏆</div>
+              <div class="why-point-body">
+                <div class="why-point-title">Local Albany Expertise</div>
+                <p class="why-point-desc">Deep knowledge of the Albany, NY market — local events, peak seasons, and guest preferences that boost your bookings.</p>
+              </div>
+            </div>
+            <div class="why-point reveal" style="transition-delay:0.2s">
+              <div class="why-point-icon">🔒</div>
+              <div class="why-point-body">
+                <div class="why-point-title">Risk-Free for Property Owners</div>
+                <p class="why-point-desc">We offer guaranteed minimum rent options, so you earn consistently whether your unit is booked or not.</p>
+              </div>
+            </div>
+            <div class="why-point reveal" style="transition-delay:0.3s">
+              <div class="why-point-icon">📱</div>
+              <div class="why-point-body">
+                <div class="why-point-title">Full Transparency</div>
+                <p class="why-point-desc">Real-time dashboards and monthly reports give you complete visibility into bookings, revenue, and expenses.</p>
+              </div>
+            </div>
+            <div class="why-point reveal" style="transition-delay:0.4s">
+              <div class="why-point-icon">⚡</div>
+              <div class="why-point-body">
+                <div class="why-point-title">Fast Launch — 30 Days</div>
+                <p class="why-point-desc">From signed agreement to live listing in 30 days or less. We move fast so you start earning sooner.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="testimonials-header reveal">
+        <span class="section-label">Client Results</span>
+        <h2 class="section-heading">What Our Partners Say</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <span class="quote-mark">"</span>
+          <div class="stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">Golden Key took my vacant unit and turned it into a $4,200/month machine. I went from worrying about finding tenants to getting monthly wire transfers. Incredible team.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">M</div>
+            <div>
+              <div class="author-name">Marcus T.</div>
+              <div class="author-role">Property Owner, Albany</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal" style="transition-delay:0.15s">
+          <span class="quote-mark">"</span>
+          <div class="stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">I had zero experience in short-term rentals. Golden Key walked me through everything, set it all up, and now I'm earning 3x what I made from traditional renting. Hands-off income.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">S</div>
+            <div>
+              <div class="author-name">Sandra R.</div>
+              <div class="author-role">Investor, Troy, NY</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal" style="transition-delay:0.3s">
+          <span class="quote-mark">"</span>
+          <div class="stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">Professional, transparent, and results-driven. They manage 3 of my properties and consistently hit 90%+ occupancy. The monthly reports are detailed and they're always reachable.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">D</div>
+            <div>
+              <div class="author-name">David K.</div>
+              <div class="author-role">Real Estate Investor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BAND ═══ -->
+  <section class="cta-band">
+    <div class="cta-orbs" id="ctaOrbs"></div>
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label" style="display:block; text-align:center;">Limited Availability</span>
+        <h2 class="section-heading">Ready to Unlock Your<br/><em class="gold-text">Property's Full Potential?</em></h2>
+        <p class="section-subtext" style="margin: 16px auto 44px; text-align:center;">We partner with a select number of property owners each quarter. Schedule your free consultation before spots fill up.</p>
+        <div class="cta-actions">
+          <a href="#contact" class="btn-primary">
+            <span>Schedule Free Consultation</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="tel:4134184138" class="btn-outline">
+            📞 &nbsp;413-418-4138
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info reveal from-left">
+          <span class="section-label">Get In Touch</span>
+          <h2 class="section-heading">Let's Talk<br/><em class="gold-text">Revenue</em></h2>
+          <div class="divider"></div>
+          <p class="section-subtext" style="margin-bottom:40px;">Schedule your free property analysis and find out exactly how much your unit could earn as a short-term rental.</p>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-value"><a href="tel:4134184138">413-418-4138</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-value"><a href="mailto:info@goldenkeydynamicresources.com">info@goldenkeydynamicresources.com</a></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Office</div>
+              <div class="contact-item-value">418 Broadway Ste R<br/>Albany, NY 12207</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🌐</div>
+            <div>
+              <div class="contact-item-label">Website</div>
+              <div class="contact-item-value"><a href="https://goldenkeydynamicresources.com" target="_blank" rel="noopener">goldenkeydynamicresources.com</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form reveal from-right" style="transition-delay:0.15s">
+          <div class="form-title">Request a Free Property Analysis</div>
+          <form id="contactForm" onsubmit="handleSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" name="firstName" placeholder="John" required />
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" name="lastName" placeholder="Smith" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" name="email" placeholder="john@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" placeholder="(xxx) xxx-xxxx" />
+            </div>
+            <div class="form-group">
+              <label>I Am A</label>
+              <select name="type" required>
+                <option value="" disabled selected>Select your situation</option>
+                <option value="owner">Property Owner — I want to earn more from my unit</option>
+                <option value="investor">Real Estate Investor</option>
+                <option value="arbitrage">Interested in Airbnb Arbitrage</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Property Location / Message</label>
+              <textarea name="message" placeholder="Tell us about your property or what you're looking to achieve..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary form-submit">
+              <span>Send My Free Analysis Request</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">
+            <img src="brand_assets/Color logo - no background.png" alt="Golden Key Dynamic Resources" />
+            <div class="footer-logo-text">
+              <div class="name">Golden Key</div>
+              <div class="sub">Dynamic Resources</div>
+            </div>
+          </a>
+          <p class="footer-desc">Albany's premier short-term rental management company. We unlock the full earning potential of every property we touch.</p>
+          <p style="font-size:12px; font-style:italic; color:var(--gold); opacity:0.7; margin-top:-12px;">Unlocking golden value with every key.</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Services</div>
+          <ul class="footer-links">
+            <li><a href="#services">Airbnb Arbitrage</a></li>
+            <li><a href="#services">Property Owner Partnership</a></li>
+            <li><a href="#services">Guest Experience</a></li>
+            <li><a href="#services">Revenue Optimization</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Company</div>
+          <ul class="footer-links">
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#why-us">Why Choose Us</a></li>
+            <li><a href="#testimonials">Client Results</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          &copy; 2026 <span>Golden Key Dynamic Resources</span>. All rights reserved. &nbsp;·&nbsp; Albany, NY 12207
+        </div>
+        <div class="footer-copy">
+          <a href="tel:4134184138" style="color:var(--text-muted);text-decoration:none;">413-418-4138</a>
+          &nbsp;·&nbsp;
+          <a href="mailto:info@goldenkeydynamicresources.com" style="color:var(--text-muted);text-decoration:none;">info@goldenkeydynamicresources.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  // ═══════════════════════════════════════════════════════
+  // CUSTOM CURSOR
+  // ═══════════════════════════════════════════════════════
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+
+  (function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  })();
+
+  document.querySelectorAll('a, button, .step-card, .service-card, .testimonial-card, .why-point').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // SCROLL PROGRESS
+  // ═══════════════════════════════════════════════════════
+  const bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = Math.min(pct, 100) + '%';
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // NAV
+  // ═══════════════════════════════════════════════════════
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // MOBILE MENU
+  // ═══════════════════════════════════════════════════════
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.add('open');
+  });
+  mobileClose.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // HERO CANVAS — WebGL MESH GRADIENT
+  // ═══════════════════════════════════════════════════════
+  (function initMeshGradient() {
+    const canvas = document.getElementById('hero-canvas');
+    const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false })
+            || canvas.getContext('experimental-webgl', { alpha: true, premultipliedAlpha: false });
+    if (!gl) return;
+
+    const vsSource = `
+      attribute vec2 a_pos;
+      void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+    `;
+
+    const fsSource = `
+      precision highp float;
+      uniform float time;
+      uniform vec2  resolution;
+
+      float hash(vec2 p) {
+        p = fract(p * vec2(234.34, 435.345));
+        p += dot(p, p + 34.23);
+        return fract(p.x * p.y);
+      }
+      float noise(vec2 p) {
+        vec2 i = floor(p), f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(hash(i), hash(i + vec2(1,0)), f.x),
+          mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), f.x),
+          f.y);
+      }
+      float fbm(vec2 p) {
+        float v = 0.0, w = 0.5;
+        for (int i = 0; i < 6; i++) {
+          v += w * noise(p);
+          p = p * 2.1 + vec2(1.3, 1.7);
+          w *= 0.5;
+        }
+        return v;
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution;
+        float t  = time * 0.08;
+        vec2 p   = (uv - 0.5) * vec2(resolution.x / resolution.y, 1.0);
+
+        // Domain-warped FBM — same technique as MeshGradient
+        vec2 q = vec2(fbm(p * 2.0 + t),
+                      fbm(p * 2.0 + vec2(1.7, 9.2) + t * 0.9));
+        vec2 r = vec2(fbm(p * 2.0 + 4.0*q + vec2(1.7, 9.2) + t * 0.6),
+                      fbm(p * 2.0 + 4.0*q + vec2(8.3, 2.8) + t * 0.5));
+        float f = fbm(p * 2.0 + 4.0 * r + t * 0.3);
+
+        // Gold palette
+        vec3 c0 = vec3(0.039, 0.025, 0.004);
+        vec3 c1 = vec3(0.24,  0.18,  0.05);
+        vec3 c2 = vec3(0.788, 0.659, 0.298);
+        vec3 c3 = vec3(0.96,  0.86,  0.54);
+
+        vec3 col = mix(c0, c1, smoothstep(0.20, 0.48, f));
+        col      = mix(col, c2, smoothstep(0.44, 0.68, f));
+        col      = mix(col, c3, smoothstep(0.66, 0.84, f));
+
+        float vig = 1.0 - smoothstep(0.30, 1.0, length((uv - 0.5) * 1.4));
+        col *= vig;
+
+        gl_FragColor = vec4(col, 0.88);
+      }
+    `;
+
+    function makeShader(src, type) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, makeShader(vsSource, gl.VERTEX_SHADER));
+    gl.attachShader(prog, makeShader(fsSource, gl.FRAGMENT_SHADER));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      -1,-1, 1,-1, -1,1,  1,-1, 1,1, -1,1
+    ]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(prog, 'time');
+    const uRes  = gl.getUniformLocation(prog, 'resolution');
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth  || window.innerWidth;
+      canvas.height = canvas.offsetHeight || window.innerHeight;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let start = performance.now();
+    (function loop() {
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform1f(uTime, (performance.now() - start) / 1000);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      requestAnimationFrame(loop);
+    })();
+  })();
+
+  // ═══════════════════════════════════════════════════════
+  // SCROLL REVEAL
+  // ═══════════════════════════════════════════════════════
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ═══════════════════════════════════════════════════════
+  // NUMBER COUNTER ANIMATION
+  // ═══════════════════════════════════════════════════════
+  const counters = document.querySelectorAll('[data-count]');
+  const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      const dur = 1600;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(el => counterObs.observe(el));
+
+  // ═══════════════════════════════════════════════════════
+  // 3D CARD TILT
+  // ═══════════════════════════════════════════════════════
+  document.querySelectorAll('.service-card, .step-card, .testimonial-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotX = ((y - cy) / cy) * -6;
+      const rotY = ((x - cx) / cx) * 6;
+      card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.5s ease, border-color 0.4s, box-shadow 0.4s';
+      setTimeout(() => card.style.transition = '', 500);
+    });
+
+    // Spotlight on testimonial cards
+    if (card.classList.contains('testimonial-card')) {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+        const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+        card.style.setProperty('--mx', x + '%');
+        card.style.setProperty('--my', y + '%');
+      });
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // MAGNETIC BUTTONS
+  // ═══════════════════════════════════════════════════════
+  document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.2}px, ${y * 0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+      btn.style.transition = 'transform 0.4s ease, box-shadow 0.3s, opacity 0.3s';
+      setTimeout(() => btn.style.transition = '', 400);
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // CTA FLOATING ORBS
+  // ═══════════════════════════════════════════════════════
+  (function createOrbs() {
+    const container = document.getElementById('ctaOrbs');
+    const sizes = [300, 200, 250, 180, 220];
+    sizes.forEach((size, i) => {
+      const orb = document.createElement('div');
+      orb.className = 'cta-orb';
+      orb.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${10 + i * 20}%;
+        top:${Math.random() * 60 + 20}%;
+        animation-duration:${6 + i * 1.5}s;
+        animation-delay:${i * 0.8}s;
+      `;
+      container.appendChild(orb);
+    });
+  })();
+
+  // ═══════════════════════════════════════════════════════
+  // FORM SUBMIT
+  // ═══════════════════════════════════════════════════════
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span>✓ Request Sent!</span>';
+    btn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.style.background = '';
+      btn.disabled = false;
+      e.target.reset();
+    }, 3500);
+  }
+  </script>
+</body>
+</html>

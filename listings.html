@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Properties | Golden Key Dynamic Resources</title>
+  <meta name="description" content="Browse our curated portfolio of premium short-term rentals managed by Golden Key Dynamic Resources." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:        #C9A84C;
+      --gold-light:  #E8C96A;
+      --gold-dark:   #9E7B2F;
+      --black:       #0A0A0A;
+      --dark:        #111111;
+      --dark-card:   #181818;
+      --dark-border: #2A2A2A;
+      --white:       #FFFFFF;
+      --text-muted:  #888888;
+      --text-light:  #CCCCCC;
+      --gradient-gold: linear-gradient(135deg, #C9A84C 0%, #E8C96A 50%, #C9A84C 100%);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; cursor: none; }
+
+    /* CURSOR */
+    #cursor-dot { width:8px;height:8px;background:var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s; }
+    #cursor-ring { width:36px;height:36px;border:1px solid rgba(201,168,76,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s; }
+    body.hovering #cursor-dot { width:12px;height:12px; }
+    body.hovering #cursor-ring { width:52px;height:52px;border-color:rgba(201,168,76,.8); }
+    #scroll-progress { position:fixed;top:0;left:0;height:2px;width:0%;background:var(--gradient-gold);z-index:9997;transition:width .1s; }
+
+    /* NAV */
+    nav { position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 0;transition:all .4s; }
+    nav.scrolled { background:rgba(10,10,10,.96);padding:14px 0;backdrop-filter:blur(20px);border-bottom:1px solid var(--dark-border);box-shadow:0 4px 40px rgba(0,0,0,.5); }
+    .container { max-width:1280px;margin:0 auto;padding:0 40px; }
+    .nav-inner { display:flex;align-items:center;justify-content:space-between; }
+    .nav-logo { display:flex;align-items:center;gap:10px;text-decoration:none;cursor:none; }
+    .nav-logo img { height:40px;width:auto;object-fit:contain; }
+    .nav-links { display:flex;align-items:center;gap:32px;list-style:none; }
+    .nav-links a { color:var(--text-light);text-decoration:none;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;transition:color .3s;cursor:none;position:relative; }
+    .nav-links a::after { content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s; }
+    .nav-links a:hover { color:var(--gold); }
+    .nav-links a:hover::after { width:100%; }
+    .btn-primary { display:inline-flex;align-items:center;gap:8px;background:var(--gradient-gold);color:var(--black);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 28px;border:none;cursor:none;text-decoration:none;position:relative;overflow:hidden;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px)); }
+    .btn-primary::before { content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%) skewX(-20deg);transition:transform .5s; }
+    .btn-primary:hover::before { transform:translateX(200%) skewX(-20deg); }
+    .btn-primary:hover { transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,.4); }
+    .hamburger { display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;padding:4px; }
+    .hamburger span { display:block;width:24px;height:2px;background:var(--gold);transition:all .3s; }
+    .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+    .mobile-menu { display:none;position:fixed;inset:0;background:var(--black);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:32px;opacity:0;transition:opacity .3s; }
+    .mobile-menu.open { display:flex;opacity:1; }
+    .mobile-menu a { color:var(--white);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;transition:color .3s;cursor:none; }
+    .mobile-menu a:hover { color:var(--gold); }
+    .mobile-close { position:absolute;top:28px;right:40px;background:none;border:none;color:var(--gold);font-size:32px;cursor:none; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 130px 0 60px;
+      border-bottom: 1px solid var(--dark-border);
+      position: relative; overflow: hidden;
+    }
+    #props-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1;
+    }
+    .page-header-inner { position: relative; z-index: 2; }
+    .page-tag { font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px; }
+    .page-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(36px,5vw,64px);font-weight:600;line-height:1.05;color:var(--white);margin-bottom:16px;
+    }
+    .page-title em {
+      font-style:normal;
+      background:linear-gradient(135deg,#C9A84C 0%,#E8C96A 40%,#F5D98B 60%,#C9A84C 100%);
+      background-size:200% auto;
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      animation:shimmer 4s linear infinite;
+    }
+    @keyframes shimmer { 0%{background-position:0% center} 100%{background-position:200% center} }
+    .page-sub { font-size:14px;line-height:1.7;color:var(--text-muted);max-width:520px; }
+
+    /* SEARCH / FILTER BAR */
+    .filter-bar {
+      background: var(--dark-card);
+      border-bottom: 1px solid var(--dark-border);
+      padding: 0;
+      position: sticky; top: 68px; z-index: 100;
+    }
+    .filter-inner {
+      display: flex; align-items: stretch;
+      gap: 0; overflow-x: auto;
+    }
+    .filter-inner::-webkit-scrollbar { display: none; }
+    .filter-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 16px 24px;
+      border-right: 1px solid var(--dark-border);
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-muted); cursor: none; white-space: nowrap;
+      transition: color .3s, background .3s;
+      background: none; border-top: none; border-bottom: none; border-left: none;
+    }
+    .filter-item:last-child { border-right: none; }
+    .filter-item:hover { color: var(--gold); background: rgba(201,168,76,.04); }
+    .filter-item.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+    .filter-item svg { width: 14px; height: 14px; }
+    .filter-search {
+      flex: 1; min-width: 200px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 24px;
+      border-right: 1px solid var(--dark-border);
+    }
+    .filter-search input {
+      background: none; border: none; outline: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; color: var(--white);
+      width: 100%; cursor: none;
+    }
+    .filter-search input::placeholder { color: var(--text-muted); }
+    .filter-search svg { color: var(--text-muted); flex-shrink: 0; }
+    .filter-count {
+      padding: 16px 24px;
+      font-size: 11px; color: var(--text-muted); white-space: nowrap;
+    }
+    .filter-count span { color: var(--gold); font-weight: 600; }
+
+    /* LISTINGS GRID */
+    .listings-body { padding: 56px 0 100px; }
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    /* PROPERTY CARD — Airbnb style */
+    .prop-card {
+      cursor: none;
+      transition: transform .3s;
+    }
+    .prop-card:hover { transform: translateY(-4px); }
+
+    /* Photo area */
+    .prop-photos {
+      position: relative;
+      border-radius: 0;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      margin-bottom: 14px;
+    }
+    .prop-photo-slides { display: flex; width: 100%; height: 100%; transition: transform .4s ease; }
+    .prop-photo-slide {
+      min-width: 100%; height: 100%;
+      position: relative; overflow: hidden;
+    }
+    .prop-photo-slide img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s ease;
+    }
+    .prop-card:hover .prop-photo-slide:first-child img { transform: scale(1.04); }
+    .prop-photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      background: var(--dark-card);
+    }
+    .prop-photo-placeholder .ph-icon { font-size: 40px; opacity: .4; }
+    .prop-photo-placeholder .ph-text { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+
+    /* Nav arrows */
+    .photo-prev, .photo-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px;
+      background: rgba(10,10,10,.75); border: none; border-radius: 50%;
+      color: var(--white); font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: none; opacity: 0; transition: opacity .25s;
+      backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+    .photo-prev { left: 12px; }
+    .photo-next { right: 12px; }
+    .prop-photos:hover .photo-prev,
+    .prop-photos:hover .photo-next { opacity: 1; }
+    .photo-prev:hover, .photo-next:hover { background: rgba(201,168,76,.25); color: var(--gold); }
+
+    /* Dot indicators */
+    .photo-dots {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 5px; z-index: 2;
+      opacity: 0; transition: opacity .25s;
+    }
+    .prop-photos:hover .photo-dots { opacity: 1; }
+    .photo-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.5); transition: background .2s, transform .2s;
+    }
+    .photo-dot.active { background: var(--white); transform: scale(1.3); }
+
+    /* Save/heart button */
+    .prop-save {
+      position: absolute; top: 14px; right: 14px;
+      background: none; border: none; cursor: none;
+      font-size: 22px; z-index: 2;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,.5));
+      transition: transform .2s;
+    }
+    .prop-save:hover { transform: scale(1.15); }
+    .prop-save.saved { color: #FF385C; }
+
+    /* Badge */
+    .prop-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(10,10,10,.85); border: 1px solid var(--gold);
+      backdrop-filter: blur(8px);
+      padding: 5px 12px; font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); z-index: 2;
+    }
+
+    /* Card info */
+    .prop-info { padding: 0 2px; }
+    .prop-info-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    .prop-location { font-size: 13px; font-weight: 600; color: var(--white); }
+    .prop-rating {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: var(--white); white-space: nowrap;
+    }
+    .prop-rating svg { color: var(--gold); width: 12px; height: 12px; }
+    .prop-type { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .prop-dates { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .prop-price-row { display: flex; align-items: baseline; gap: 4px; }
+    .prop-price { font-size: 14px; font-weight: 700; color: var(--white); }
+    .prop-price-unit { font-size: 12px; color: var(--text-muted); }
+
+    /* REVEAL */
+    .reveal { opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1); }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+
+    /* EMPTY STATE */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center;
+      padding: 80px 40px;
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+    .empty-text { font-size: 14px; color: var(--text-muted); }
+
+    /* FOOTER */
+    footer { background:var(--dark);border-top:1px solid var(--dark-border);padding:64px 0 32px; }
+    .footer-grid { display:grid;grid-template-columns:2fr 1fr 1fr;gap:64px;margin-bottom:48px; }
+    .footer-logo { display:flex;align-items:center;gap:10px;margin-bottom:20px;text-decoration:none;cursor:none; }
+    .footer-logo img { height:36px; }
+    .footer-logo-text .name { font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .footer-logo-text .sub { font-size:7px;letter-spacing:3px;text-transform:uppercase;color:var(--text-muted); }
+    .footer-desc { font-size:13px;line-height:1.7;color:var(--text-muted);max-width:300px;margin-bottom:16px; }
+    .footer-tagline { font-size:12px;font-style:italic;color:var(--gold);opacity:.7; }
+    .footer-col-title { font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px; }
+    .footer-links { list-style:none;display:flex;flex-direction:column;gap:12px; }
+    .footer-links a { color:var(--text-muted);text-decoration:none;font-size:13px;transition:color .3s,padding-left .3s;cursor:none;display:block; }
+    .footer-links a:hover { color:var(--gold);padding-left:8px; }
+    .footer-bottom { padding-top:32px;border-top:1px solid var(--dark-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px; }
+    .footer-copy { font-size:11px;color:var(--text-muted); }
+    .footer-copy span { color:var(--gold); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) { .listings-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .listings-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      body { cursor: auto; }
+      #cursor-dot, #cursor-ring { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+  <div id="scroll-progress"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="brand_assets/Color logo - no background.png" alt="Golden Key Dynamic Resources" />
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html#how-it-works">How It Works</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="listings.html" style="color:var(--gold)">Properties</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <a href="index.html#contact" class="btn-primary nav-cta">List My Property</a>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">&times;</button>
+    <a href="index.html">Home</a>
+    <a href="listings.html">Properties</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="index.html#contact" class="btn-primary" style="margin-top:16px;">List My Property</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <canvas id="props-canvas"></canvas>
+    <div class="container">
+      <div class="page-header-inner">
+        <span class="page-tag">Our Portfolio</span>
+        <h1 class="page-title">Premium Properties,<br/><em>Managed to Perfection</em></h1>
+        <p class="page-sub">Every listing in our portfolio is professionally staged, photographed, and managed by the Golden Key team for a consistently 5-star guest experience.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="container" style="padding:0">
+      <div class="filter-inner">
+        <div class="filter-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="search-input" placeholder="Search by location or property name..." />
+        </div>
+        <button class="filter-item active" data-filter="all">All</button>
+        <button class="filter-item" data-filter="studio">Studio</button>
+        <button class="filter-item" data-filter="apartment">Apartment</button>
+        <button class="filter-item" data-filter="house">House</button>
+        <div class="filter-count">Showing <span id="visible-count">6</span> properties</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTINGS -->
+  <div class="listings-body">
+    <div class="container">
+      <div class="listings-grid" id="listings-grid">
+
+        <!-- ══ CARD 1 ══ -->
+        <a href="modern-studio-stay.html" style="text-decoration:none;color:inherit;" class="prop-card reveal" data-type="studio" data-name="modern studio stay honolulu">
+          <div class="prop-photos" data-slides="1">
+            <div class="prop-photo-slides">
+              <div class="prop-photo-slide">
+                <img src="goldenkeydynamicresources.com_listing_modern-studio-stay-in-honolulu-oahu_.png" alt="Modern Studio Stay in Honolulu" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+            </div>
+            <button class="prop-save" data-saved="false">♡</button>
+            <div class="prop-badge">★ Guest Favourite</div>
+            <button class="photo-prev">&#8249;</button>
+            <button class="photo-next">&#8250;</button>
+            <div class="photo-dots"><div class="photo-dot active"></div></div>
+          </div>
+          <div class="prop-info">
+            <div class="prop-info-top">
+              <div class="prop-location">Honolulu, Oahu</div>
+              <div class="prop-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                5.0
+              </div>
+            </div>
+            <div class="prop-type">Entire studio · 2 beds · 1 bath</div>
+            <div class="prop-dates">Available now</div>
+            <div class="prop-price-row">
+              <span class="prop-price">$250</span>
+              <span class="prop-price-unit">/ night</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ══ CARD 2 ══ -->
+        <a href="modern-apartment-stay.html" style="text-decoration:none;color:inherit;" class="prop-card reveal" style="transition-delay:.08s" data-type="apartment" data-name="modern apartment stay honolulu">
+          <div class="prop-photos" data-slides="5">
+            <div class="prop-photo-slides" style="transition:transform .4s ease;">
+              <div class="prop-photo-slide">
+                <img src="Screenshot-2025-06-01-121825-1.png" alt="Modern Apartment Stay — main room" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div class="prop-photo-slide">
+                <img src="Screenshot-2025-06-01-121813.png" alt="Modern Apartment Stay — beds" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div class="prop-photo-slide">
+                <img src="Screenshot-2025-06-01-115018.png" alt="Modern Apartment Stay — living area" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div class="prop-photo-slide">
+                <img src="Screenshot-2025-06-01-121836.png" alt="Modern Apartment Stay — kitchenette" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+              <div class="prop-photo-slide">
+                <img src="Screenshot-2025-06-01-113232.png" alt="Modern Apartment Stay — bathroom" style="width:100%;height:100%;object-fit:cover;" />
+              </div>
+            </div>
+            <button class="prop-save" data-saved="false">♡</button>
+            <div class="prop-badge">New Listing</div>
+            <button class="photo-prev">&#8249;</button>
+            <button class="photo-next">&#8250;</button>
+            <div class="photo-dots">
+              <div class="photo-dot active"></div>
+              <div class="photo-dot"></div>
+              <div class="photo-dot"></div>
+              <div class="photo-dot"></div>
+              <div class="photo-dot"></div>
+            </div>
+          </div>
+          <div class="prop-info">
+            <div class="prop-info-top">
+              <div class="prop-location">Honolulu, Oahu</div>
+              <div class="prop-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                5.0
+              </div>
+            </div>
+            <div class="prop-type">Entire apartment · 2 beds · 1 bath</div>
+            <div class="prop-dates">Available now</div>
+            <div class="prop-price-row">
+              <span class="prop-price">$195</span>
+              <span class="prop-price-unit">/ night</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- ══ CARD 3 ══ -->
+        <div class="prop-card reveal" style="transition-delay:.16s" data-type="house" data-name="albany private house">
+          <div class="prop-photos" data-slides="1">
+            <div class="prop-photo-slides">
+              <div class="prop-photo-slide">
+                <div class="prop-photo-placeholder">
+                  <div class="ph-icon">🏡</div>
+                  <div class="ph-text">Add photo here</div>
+                </div>
+              </div>
+            </div>
+            <button class="prop-save" data-saved="false">♡</button>
+            <button class="photo-prev">&#8249;</button>
+            <button class="photo-next">&#8250;</button>
+            <div class="photo-dots"><div class="photo-dot active"></div></div>
+          </div>
+          <div class="prop-info">
+            <div class="prop-info-top">
+              <div class="prop-location">Albany, NY</div>
+              <div class="prop-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.9
+              </div>
+            </div>
+            <div class="prop-type">Entire house · 3 beds · 2 baths</div>
+            <div class="prop-dates">Available now</div>
+            <div class="prop-price-row">
+              <span class="prop-price">$320</span>
+              <span class="prop-price-unit">/ night</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ CARD 4 ══ -->
+        <div class="prop-card reveal" style="transition-delay:.24s" data-type="apartment" data-name="broadway suite albany">
+          <div class="prop-photos" data-slides="1">
+            <div class="prop-photo-slides">
+              <div class="prop-photo-slide">
+                <div class="prop-photo-placeholder">
+                  <div class="ph-icon">🏙</div>
+                  <div class="ph-text">Add photo here</div>
+                </div>
+              </div>
+            </div>
+            <button class="prop-save" data-saved="false">♡</button>
+            <div class="prop-badge">Top Rated</div>
+            <button class="photo-prev">&#8249;</button>
+            <button class="photo-next">&#8250;</button>
+            <div class="photo-dots"><div class="photo-dot active"></div></div>
+          </div>
+          <div class="prop-info">
+            <div class="prop-info-top">
+              <div class="prop-location">Broadway, Albany NY</div>
+              <div class="prop-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                5.0
+              </div>
+            </div>
+            <div class="prop-type">Entire apartment · 1 bed · 1 bath</div>
+            <div class="prop-dates">Available now</div>
+            <div class="prop-price-row">
+              <span class="prop-price">$210</span>
+              <span class="prop-price-unit">/ night</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ CARD 5 ══ -->
+        <div class="prop-card reveal" style="transition-delay:.32s" data-type="studio" data-name="troy studio loft">
+          <div class="prop-photos" data-slides="1">
+            <div class="prop-photo-slides">
+              <div class="prop-photo-slide">
+                <div class="prop-photo-placeholder">
+                  <div class="ph-icon">🏠</div>
+                  <div class="ph-text">Add photo here</div>
+                </div>
+              </div>
+            </div>
+            <button class="prop-save" data-saved="false">♡</button>
+            <button class="photo-prev">&#8249;</button>
+            <button class="photo-next">&#8250;</button>
+            <div class="photo-dots"><div class="photo-dot active"></div></div>
+          </div>
+          <div class="prop-info">
+            <div class="prop-info-top">
+              <div class="prop-location">Troy, NY</div>
+              <div class="prop-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.8
+              </div>
+            </div>
+            <div class="prop-type">Entire studio · 1 bed · 1 bath</div>
+            <div class="prop-dates">Available now</div>
+            <div class="prop-price-row">
+              <span class="prop-price">$160</span>
+              <span class="prop-price-unit">/ night</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ CARD 6 ══ -->
+        <div class="prop-card reveal" style="transition-delay:.4s" data-type="house" data-name="schenectady family home">
+          <div class="prop-photos" data-slides="1">
+            <div class="prop-photo-slides">
+              <div class="prop-photo-slide">
+                <div class="prop-photo-placeholder">
+                  <div class="ph-icon">🏡</div>
+                  <div class="ph-text">Add photo here</div>
+                </div>
+              </div>
+            </div>
+            <button class="prop-save" data-saved="false">♡</button>
+            <button class="photo-prev">&#8249;</button>
+            <button class="photo-next">&#8250;</button>
+            <div class="photo-dots"><div class="photo-dot active"></div></div>
+          </div>
+          <div class="prop-info">
+            <div class="prop-info-top">
+              <div class="prop-location">Schenectady, NY</div>
+              <div class="prop-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.9
+              </div>
+            </div>
+            <div class="prop-type">Entire house · 4 beds · 2 baths</div>
+            <div class="prop-dates">Available now</div>
+            <div class="prop-price-row">
+              <span class="prop-price">$375</span>
+              <span class="prop-price-unit">/ night</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="footer-logo">
+            <img src="brand_assets/Color logo - no background.png" alt="Golden Key" />
+            <div class="footer-logo-text">
+              <div class="name">Golden Key</div>
+              <div class="sub">Dynamic Resources</div>
+            </div>
+          </a>
+          <p class="footer-desc">Albany's premier short-term rental management company. We unlock the full earning potential of every property we touch.</p>
+          <p class="footer-tagline">Unlocking golden value with every key.</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Properties</div>
+          <ul class="footer-links">
+            <li><a href="modern-studio-stay.html">Modern Studio Stay</a></li>
+            <li><a href="modern-apartment-stay.html">Modern Apartment Stay</a></li>
+            <li><a href="index.html#contact">List Your Property</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Company</div>
+          <ul class="footer-links">
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+            <li><a href="index.html#why-us">Why Choose Us</a></li>
+            <li><a href="index.html#testimonials">Client Results</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">&copy; 2026 <span>Golden Key Dynamic Resources</span>. All rights reserved. · Albany, NY 12207</div>
+        <div class="footer-copy">
+          <a href="tel:4134184138" style="color:var(--text-muted);text-decoration:none;">413-418-4138</a>
+          &nbsp;·&nbsp;
+          <a href="mailto:info@goldenkeydynamicresources.com" style="color:var(--text-muted);text-decoration:none;">info@goldenkeydynamicresources.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  // CURSOR
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+  (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button,.prop-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+
+  // SCROLL PROGRESS
+  const bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    bar.style.width = Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';
+  });
+
+  // NAV
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 40));
+
+  // MOBILE MENU
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.add('open'); });
+  document.getElementById('mobileClose').addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); });
+
+  // REVEAL
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // PHOTO SLIDER
+  document.querySelectorAll('.prop-photos').forEach(photos => {
+    const slides = photos.querySelector('.prop-photo-slides');
+    const dots = photos.querySelectorAll('.photo-dot');
+    const total = photos.querySelectorAll('.prop-photo-slide').length;
+    let current = 0;
+
+    function goTo(n) {
+      current = (n + total) % total;
+      slides.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d,i) => d.classList.toggle('active', i === current));
+    }
+
+    photos.querySelector('.photo-next').addEventListener('click', e => { e.stopPropagation(); goTo(current+1); });
+    photos.querySelector('.photo-prev').addEventListener('click', e => { e.stopPropagation(); goTo(current-1); });
+  });
+
+  // SAVE / HEART
+  document.querySelectorAll('.prop-save').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const saved = btn.dataset.saved === 'true';
+      btn.dataset.saved = !saved;
+      btn.textContent = saved ? '♡' : '♥';
+      btn.classList.toggle('saved', !saved);
+    });
+  });
+
+  // FILTER
+  const cards = document.querySelectorAll('.prop-card');
+  const filterBtns = document.querySelectorAll('.filter-item[data-filter]');
+  const countEl = document.getElementById('visible-count');
+  const searchInput = document.getElementById('search-input');
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const q = searchInput.value.toLowerCase();
+    let visible = 0;
+    cards.forEach(card => {
+      const matchType = activeFilter === 'all' || card.dataset.type === activeFilter;
+      const matchSearch = !q || card.dataset.name.includes(q);
+      const show = matchType && matchSearch;
+      card.style.display = show ? '' : 'none';
+      if(show) visible++;
+    });
+    countEl.textContent = visible;
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+  searchInput.addEventListener('input', applyFilters);
+
+  // ═══════════════════════════════════════════════════════
+  // PROPS HEADER — WebGL MESH GRADIENT
+  // ═══════════════════════════════════════════════════════
+  (function initMeshGradient() {
+    const canvas = document.getElementById('props-canvas');
+    const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false })
+            || canvas.getContext('experimental-webgl', { alpha: true, premultipliedAlpha: false });
+    if (!gl) return;
+
+    const vsSource = `
+      attribute vec2 a_pos;
+      void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+    `;
+    const fsSource = `
+      precision mediump float;
+      uniform float time;
+      uniform vec2  resolution;
+
+      float hash(vec2 p) {
+        p = fract(p * vec2(234.34, 435.345));
+        p += dot(p, p + 34.23);
+        return fract(p.x * p.y);
+      }
+      float noise(vec2 p) {
+        vec2 i = floor(p), f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(hash(i), hash(i + vec2(1,0)), f.x),
+          mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), f.x),
+          f.y);
+      }
+      float fbm(vec2 p) {
+        float v = 0.0, w = 0.5;
+        for (int i = 0; i < 4; i++) {
+          v += w * noise(p);
+          p = p * 2.1 + vec2(1.3, 1.7);
+          w *= 0.5;
+        }
+        return v;
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / resolution;
+        float t  = time * 0.06;
+        vec2 p   = (uv - 0.5) * vec2(resolution.x / resolution.y, 1.0);
+
+        vec2 q = vec2(fbm(p * 2.0 + t),
+                      fbm(p * 2.0 + vec2(1.7, 9.2) + t * 0.8));
+        float f = fbm(p * 2.0 + 4.0 * q + t * 0.3);
+
+        vec3 c0 = vec3(0.039, 0.025, 0.004);
+        vec3 c1 = vec3(0.24,  0.18,  0.05);
+        vec3 c2 = vec3(0.788, 0.659, 0.298);
+        vec3 c3 = vec3(0.96,  0.86,  0.54);
+
+        vec3 col = mix(c0, c1, smoothstep(0.20, 0.48, f));
+        col      = mix(col, c2, smoothstep(0.44, 0.68, f));
+        col      = mix(col, c3, smoothstep(0.66, 0.84, f));
+
+        float vig = 1.0 - smoothstep(0.30, 1.0, length((uv - 0.5) * 1.4));
+        col *= vig;
+
+        gl_FragColor = vec4(col, 0.88);
+      }
+    `;
+
+    function makeShader(src, type) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, makeShader(vsSource, gl.VERTEX_SHADER));
+    gl.attachShader(prog, makeShader(fsSource, gl.FRAGMENT_SHADER));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      -1,-1, 1,-1, -1,1,  1,-1, 1,1, -1,1
+    ]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(prog, 'time');
+    const uRes  = gl.getUniformLocation(prog, 'resolution');
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    function resize() {
+      canvas.width  = canvas.offsetWidth  || window.innerWidth;
+      canvas.height = canvas.offsetHeight || canvas.closest('.page-header').offsetHeight || 300;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let start = performance.now(), last = 0;
+    (function loop(now) {
+      requestAnimationFrame(loop);
+      if (now - last < 33) return; // ~30 fps
+      last = now;
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform1f(uTime, (now - start) / 1000);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    })(0);
+  })();
+  </script>
+</body>
+</html>
