@@ -1517,17 +1517,34 @@
   // ═══════════════════════════════════════════════════════
   function handleSubmit(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
+    const form = e.target;
+    const btn = form.querySelector('.form-submit');
     const orig = btn.innerHTML;
-    btn.innerHTML = '<span>✓ Request Sent!</span>';
-    btn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+    btn.innerHTML = '<span>Sending...</span>';
     btn.disabled = true;
-    setTimeout(() => {
-      btn.innerHTML = orig;
-      btn.style.background = '';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if (res.ok) {
+        btn.innerHTML = '<span>✓ Request Sent!</span>';
+        btn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+        form.reset();
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3500);
+      } else {
+        btn.innerHTML = '<span>Error — please try again</span>';
+        btn.disabled = false;
+      }
+    }).catch(() => {
+      btn.innerHTML = '<span>Error — please try again</span>';
       btn.disabled = false;
-      e.target.reset();
-    }, 3500);
+    });
   }
   </script>
 </body>
