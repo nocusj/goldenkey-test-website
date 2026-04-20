@@ -70,6 +70,32 @@
       transition: width 0.1s linear;
     }
 
+    /* ─── EXPAND TOGGLE ──────────────────────────────── */
+    .expandable-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+    }
+    .expandable-body.open {
+      max-height: 400px; opacity: 1;
+    }
+    .expand-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 14px; font-size: 10px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); background: none; border: none;
+      cursor: none; transition: opacity .3s;
+      font-family: 'Montserrat', sans-serif; padding: 0;
+    }
+    .expand-btn:hover { opacity: .7; }
+    .expand-btn .expand-icon {
+      width: 18px; height: 18px; border: 1px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; line-height: 1;
+      transition: transform .3s;
+    }
+    .expand-btn.open .expand-icon { transform: rotate(45deg); }
+
     /* ─── UTILITY ─────────────────────────────────────── */
     .gold-text {
       background: linear-gradient(135deg, #C9A84C 0%, #E8C96A 40%, #F5D98B 60%, #C9A84C 100%);
@@ -473,14 +499,9 @@
     .service-features li {
       font-size: 12px; color: var(--text-light);
       display: flex; align-items: center; gap: 10px;
-      opacity: 0; transform: translateX(-10px);
+      opacity: 1; transform: translateX(0);
       transition: opacity 0.3s, transform 0.3s;
     }
-    .service-card:hover .service-features li { opacity: 1; transform: translateX(0); }
-    .service-card:hover .service-features li:nth-child(1) { transition-delay: 0.05s; }
-    .service-card:hover .service-features li:nth-child(2) { transition-delay: 0.1s; }
-    .service-card:hover .service-features li:nth-child(3) { transition-delay: 0.15s; }
-    .service-card:hover .service-features li:nth-child(4) { transition-delay: 0.2s; }
     .service-features li::before {
       content: ''; width: 16px; height: 1px; background: var(--gold); flex-shrink: 0;
     }
@@ -488,8 +509,7 @@
       background: linear-gradient(135deg, #1A1500 0%, #111111 100%);
       border-color: rgba(201, 168, 76, 0.25);
     }
-    /* always show features on featured card */
-    .service-card.featured .service-features li { opacity: 1; transform: translateX(0); }
+
 
     /* ─── COMMITMENT ─────────────────────────────────── */
     .commitment { padding: 120px 0; background: var(--dark); }
@@ -895,25 +915,37 @@
           <div class="step-number">01</div>
           <div class="step-icon">🏠</div>
           <div class="step-title">Property Analysis</div>
-          <p class="step-desc">We evaluate your property's earning potential using market data, seasonality trends, and local demand signals.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="step-desc" style="margin-top:12px;">We evaluate your property's earning potential using market data, seasonality trends, and local demand signals — across short, mid, and long-term strategies.</p>
+          </div>
         </div>
         <div class="step-card reveal" style="transition-delay:0.12s">
           <div class="step-number">02</div>
           <div class="step-icon">✨</div>
           <div class="step-title">Setup & Staging</div>
-          <p class="step-desc">Professional photography, interior design coordination, and listing optimization across all major platforms.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="step-desc" style="margin-top:12px;">Professional photography, interior design coordination, and listing optimization across all major platforms.</p>
+          </div>
         </div>
         <div class="step-card reveal" style="transition-delay:0.24s">
           <div class="step-number">03</div>
           <div class="step-icon">📊</div>
           <div class="step-title">Dynamic Pricing</div>
-          <p class="step-desc">AI-powered pricing adjusts daily to maximize revenue — always competitive, never leaving money on the table.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="step-desc" style="margin-top:12px;">AI-powered pricing adjusts daily to maximize revenue — always competitive, never leaving money on the table.</p>
+          </div>
         </div>
         <div class="step-card reveal" style="transition-delay:0.36s">
           <div class="step-number">04</div>
           <div class="step-icon">💰</div>
           <div class="step-title">Passive Income</div>
-          <p class="step-desc">Sit back and collect. We handle guests, cleaning, maintenance coordination, and monthly reporting.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="step-desc" style="margin-top:12px;">Sit back and collect. We handle guests, cleaning, maintenance coordination, and monthly reporting.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -986,46 +1018,58 @@
         <div class="service-card featured reveal">
           <div class="service-icon-wrap">⚡</div>
           <div class="service-title">Short-Term Rentals</div>
-          <p class="service-desc">Maximize nightly revenue through Airbnb, VRBO, and Booking.com. We handle everything from dynamic pricing to guest communication — fully hands-off for you.</p>
-          <ul class="service-features">
-            <li>Multi-platform listing management</li>
-            <li>Dynamic pricing & revenue optimization</li>
-            <li>24/7 guest communication & support</li>
-            <li>Professional photography & staging</li>
-          </ul>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="service-desc">Maximize nightly revenue through Airbnb, VRBO, and Booking.com. We handle everything from dynamic pricing to guest communication — fully hands-off for you.</p>
+            <ul class="service-features" style="opacity:1;transform:none;">
+              <li>Multi-platform listing management</li>
+              <li>Dynamic pricing & revenue optimization</li>
+              <li>24/7 guest communication & support</li>
+              <li>Professional photography & staging</li>
+            </ul>
+          </div>
         </div>
         <div class="service-card reveal" style="transition-delay:0.12s">
           <div class="service-icon-wrap">🏢</div>
           <div class="service-title">Mid-Term Rentals</div>
-          <p class="service-desc">30-day+ stays for corporate clients, travel nurses, relocating professionals, and insurance housing. Stable income with less turnover than short-term rentals.</p>
-          <ul class="service-features">
-            <li>Corporate & insurance housing placement</li>
-            <li>Travel nurse & relocation clients</li>
-            <li>3–5 year master lease agreements</li>
-            <li>Furnished & unfurnished options</li>
-          </ul>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="service-desc">30-day+ stays for corporate clients, travel nurses, relocating professionals, and insurance housing. Stable income with less turnover than short-term rentals.</p>
+            <ul class="service-features" style="opacity:1;transform:none;">
+              <li>Corporate & insurance housing placement</li>
+              <li>Travel nurse & relocation clients</li>
+              <li>3–5 year master lease agreements</li>
+              <li>Furnished & unfurnished options</li>
+            </ul>
+          </div>
         </div>
         <div class="service-card reveal" style="transition-delay:0.24s">
           <div class="service-icon-wrap">🏡</div>
           <div class="service-title">Long-Term Rentals</div>
-          <p class="service-desc">Traditional 12-month leases with vetted, screened tenants. Predictable monthly income, full property management, and zero day-to-day involvement from you.</p>
-          <ul class="service-features">
-            <li>Thorough tenant screening & placement</li>
-            <li>Lease preparation & management</li>
-            <li>Maintenance coordination</li>
-            <li>Monthly reporting & rent collection</li>
-          </ul>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="service-desc">Traditional 12-month leases with vetted, screened tenants. Predictable monthly income, full property management, and zero day-to-day involvement from you.</p>
+            <ul class="service-features" style="opacity:1;transform:none;">
+              <li>Thorough tenant screening & placement</li>
+              <li>Lease preparation & management</li>
+              <li>Maintenance coordination</li>
+              <li>Monthly reporting & rent collection</li>
+            </ul>
+          </div>
         </div>
         <div class="service-card reveal" style="transition-delay:0.36s">
           <div class="service-icon-wrap">🛡️</div>
           <div class="service-title">Property Protection & Security</div>
-          <p class="service-desc">Across all rental types — your property is protected. 24hr surveillance, $3M insurance coverage, strict house rules, and a 24hr handyman on standby.</p>
-          <ul class="service-features">
-            <li>Insurance coverage up to $3M</li>
-            <li>24hr front, side & rear surveillance</li>
-            <li>24hr handyman — repairs under $500 on us</li>
-            <li>Advanced guest & tenant screening</li>
-          </ul>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body">
+            <p class="service-desc">Across all rental types — your property is protected. 24hr surveillance, $3M insurance coverage, strict house rules, and a 24hr handyman on standby.</p>
+            <ul class="service-features" style="opacity:1;transform:none;">
+              <li>Insurance coverage up to $3M</li>
+              <li>24hr front, side & rear surveillance</li>
+              <li>24hr handyman — repairs under $500 on us</li>
+              <li>Advanced guest & tenant screening</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -1044,62 +1088,74 @@
         <div class="commitment-item reveal">
           <div class="commitment-icon">🏢</div>
           <div class="commitment-title">You're Working With a Company</div>
-          <p class="commitment-desc">Golden Key Dynamic Resources is a licensed business — not an individual. You get the accountability, professionalism, and systems of a full company behind your property.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">Golden Key Dynamic Resources is a licensed business — not an individual. You get the accountability, professionalism, and systems of a full company behind your property.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">📋</div>
           <div class="commitment-title">3–5 Year Lease Commitment</div>
-          <p class="commitment-desc">We sign a long-term master lease — 3 to 5 years. No short-term experiments. We're committed to your property for the long haul.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">We sign a long-term master lease — 3 to 5 years. No short-term experiments. We're committed to your property for the long haul.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🚫</div>
           <div class="commitment-title">Strict House Rules — Always</div>
-          <p class="commitment-desc">No pets. No events or parties. No smoking. No noise after 9:30pm. These rules are non-negotiable and enforced with every single guest.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">No pets. No events or parties. No smoking. No noise after 9:30pm. These rules are non-negotiable and enforced with every single guest.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">📷</div>
           <div class="commitment-title">24hr Surveillance</div>
-          <p class="commitment-desc">Cameras installed on the front, side, and rear of every property. Your home is monitored around the clock — 24 hours a day, 7 days a week.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">Cameras installed on the front, side, and rear of every property. Your home is monitored around the clock — 24 hours a day, 7 days a week.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🛡️</div>
           <div class="commitment-title">Up to $3M Insurance Coverage</div>
-          <p class="commitment-desc">We carry comprehensive insurance coverage up to $3 million, plus additional short-term rental insurance through Proper.Insure for complete protection.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">We carry comprehensive insurance coverage up to $3 million, plus additional short-term rental insurance through Proper.Insure for complete protection.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🧹</div>
           <div class="commitment-title">Professional Cleanings Weekly</div>
-          <p class="commitment-desc">Professional cleaners come in 1–2 times per week. Your property is always kept in pristine, hotel-quality condition — no exceptions.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">Professional cleaners come in 1–2 times per week. Your property is always kept in pristine, hotel-quality condition — no exceptions.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🔧</div>
           <div class="commitment-title">24hr Handyman — On Us</div>
-          <p class="commitment-desc">We handle all repairs under $500 ourselves — you'll never get a maintenance call from us. A 24hr handyman is always on standby for your property.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">We handle all repairs under $500 ourselves — you'll never get a maintenance call from us. A 24hr handyman is always on standby for your property.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🔍</div>
           <div class="commitment-title">Advanced Guest Screening</div>
-          <p class="commitment-desc">Robust systems for screening and protecting your home. Only verified, vetted guests and corporate clients are placed in your property.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">Robust systems for screening and protecting your home. Only verified, vetted guests and corporate clients are placed in your property.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🤝</div>
           <div class="commitment-title">Landlord & Neighbor Relations</div>
-          <p class="commitment-desc">We personally introduce ourselves to your neighbors, give them our contact info, and build trust in the community — so your property is always welcome.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">We personally introduce ourselves to your neighbors, give them our contact info, and build trust in the community — so your property is always welcome.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🔗</div>
           <div class="commitment-title">Long-Term Relationship First</div>
-          <p class="commitment-desc">Our business is built on lasting partnerships. We grow with our landlords and aim to manage multiple properties together as you expand your portfolio.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">Our business is built on lasting partnerships. We grow with our landlords and aim to manage multiple properties together as you expand your portfolio.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">🎯</div>
           <div class="commitment-title">Goal: Your Last Tenant</div>
-          <p class="commitment-desc">We don't want to be just another tenant. Our goal is to be your final one — eliminating turnover, vacancy, and stress from your life permanently.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">We don't want to be just another tenant. Our goal is to be your final one — eliminating turnover, vacancy, and stress from your life permanently.</p></div>
         </div>
         <div class="commitment-item reveal">
           <div class="commitment-icon">💯</div>
           <div class="commitment-title">100% Occupancy, Zero Vacancy</div>
-          <p class="commitment-desc">Whether we have guests or not, we always pay your rent. 100% occupancy guaranteed — you'll never lose a month of income again.</p>
+          <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+          <div class="expandable-body"><p class="commitment-desc">Whether we have guests or not, we always pay your rent. 100% occupancy guaranteed — you'll never lose a month of income again.</p></div>
         </div>
       </div>
     </div>
@@ -1146,28 +1202,32 @@
               <div class="why-point-icon">🏆</div>
               <div class="why-point-body">
                 <div class="why-point-title">We Become Your Last Tenant</div>
-                <p class="why-point-desc">Our goal is a 3–5 year partnership — 100% occupancy, zero vacancy, and you'll never deal with turnover again. We always pay rent, whether we have guests or not.</p>
+                <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+                <div class="expandable-body"><p class="why-point-desc">Our goal is a 3–5 year partnership — 100% occupancy, zero vacancy, and you'll never deal with turnover again. We always pay rent, whether we have guests or not.</p></div>
               </div>
             </div>
             <div class="why-point reveal" style="transition-delay:0.2s">
               <div class="why-point-icon">🔒</div>
               <div class="why-point-body">
                 <div class="why-point-title">Up to $3M Insurance Coverage</div>
-                <p class="why-point-desc">We carry comprehensive insurance coverage up to $3 million, plus additional short-term rental insurance — your asset is fully protected at all times.</p>
+                <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+                <div class="expandable-body"><p class="why-point-desc">We carry comprehensive insurance coverage up to $3 million, plus additional short-term rental insurance — your asset is fully protected at all times.</p></div>
               </div>
             </div>
             <div class="why-point reveal" style="transition-delay:0.3s">
               <div class="why-point-icon">🛠️</div>
               <div class="why-point-body">
                 <div class="why-point-title">24hr Handyman — Never Bother You</div>
-                <p class="why-point-desc">We handle all repairs under $500 ourselves. A 24hr handyman is always on call, so you'll never get an unexpected maintenance call from us.</p>
+                <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+                <div class="expandable-body"><p class="why-point-desc">We handle all repairs under $500 ourselves. A 24hr handyman is always on call, so you'll never get an unexpected maintenance call from us.</p></div>
               </div>
             </div>
             <div class="why-point reveal" style="transition-delay:0.4s">
               <div class="why-point-icon">⚡</div>
               <div class="why-point-body">
                 <div class="why-point-title">Fast Launch — 30 Days</div>
-                <p class="why-point-desc">From signed agreement to live listing in 30 days or less. Professional photography, staging, and multi-platform setup — we move fast so you start earning sooner.</p>
+                <button class="expand-btn" onclick="toggleExpand(this)"><span class="expand-icon">+</span> Learn More</button>
+                <div class="expandable-body"><p class="why-point-desc">From signed agreement to live listing in 30 days or less. Professional photography, staging, and multi-platform setup — we move fast so you start earning sooner.</p></div>
               </div>
             </div>
           </div>
@@ -1408,6 +1468,16 @@
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
   });
+
+  // ═══════════════════════════════════════════════════════
+  // EXPAND / COLLAPSE
+  // ═══════════════════════════════════════════════════════
+  function toggleExpand(btn) {
+    const body = btn.nextElementSibling;
+    body.classList.toggle('open');
+    btn.classList.toggle('open');
+    btn.querySelector('.expand-icon').textContent = btn.classList.contains('open') ? '×' : '+';
+  }
 
   // ═══════════════════════════════════════════════════════
   // SCROLL PROGRESS
