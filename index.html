@@ -765,6 +765,7 @@
       #cursor-dot, #cursor-ring { display: none; }
       .hero-accent-line, .hero-accent-line-2 { display: none; }
       .hero-grid { display: none; }
+      #featured-properties .reveal > div[style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -786,7 +787,7 @@
         <ul class="nav-links">
           <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="listings.html">Properties</a></li>
+          <li><a href="#featured-properties">Properties</a></li>
           <li><a href="#why-us">Why Us</a></li>
           <li><a href="#testimonials">Results</a></li>
           <li><a href="#contact">Contact</a></li>
@@ -820,14 +821,14 @@
     <div class="hero-accent-line-2"></div>
     <div class="container">
       <div class="hero-content">
-        <div class="hero-badge">Founded by John Nocus · Albany's Premier STR Partner</div>
+        <div class="hero-badge">Founded by John Nocus · Albany's Premier Rental Management Partner</div>
         <h1 class="hero-title">
           <span class="line"><span class="line-inner">Unlock the</span></span>
           <span class="line"><span class="line-inner"><em>Golden Potential</em></span></span>
-          <span class="line"><span class="line-inner">of Short-Term Rentals</span></span>
+          <span class="line"><span class="line-inner">of Your Property</span></span>
         </h1>
         <p class="hero-desc">
-          We specialize in Airbnb arbitrage and full-service short-term rental management — transforming properties into high-performing revenue streams so you can earn more with zero hassle.
+          We specialize in short-term, mid-term, and long-term rental management — transforming properties into high-performing revenue streams so you can earn more with zero hassle.
         </p>
         <div class="hero-actions">
           <a href="#contact" class="btn-primary">
@@ -858,7 +859,7 @@
   <section class="trusted">
     <div class="container">
       <div class="trusted-inner">
-        <span class="trusted-label">Listed On</span>
+        <span class="trusted-label">Listed & Placed On</span>
         <div class="trusted-logos">
           <div class="platform-badge">
             <svg viewBox="0 0 24 24" fill="#FF5A5F"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.868 16.776c-.225.337-.548.576-.926.676-.378.1-.779.062-1.13-.107l-3.52-1.76a.5.5 0 0 1-.292-.45V7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6.734l2.904 1.452c.618.309.869 1.07.564 1.688a1.28 1.28 0 0 1-.6.602z"/></svg>
@@ -886,7 +887,7 @@
     <div class="container">
       <div class="how-header reveal">
         <span class="section-label">The Process</span>
-        <h2 class="section-heading">From Property to<br/><em class="gold-text">Profitable Listing</em></h2>
+        <h2 class="section-heading">From Property to<br/><em class="gold-text">Profitable Rental</em></h2>
         <div class="divider"></div>
       </div>
       <div class="how-steps">
@@ -918,58 +919,112 @@
     </div>
   </section>
 
+  <!-- ═══ FEATURED PROPERTIES ═══ -->
+  <section style="padding: 120px 0; background: var(--dark); border-top: 1px solid var(--dark-border);" id="featured-properties">
+    <div class="container">
+      <div class="reveal" style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; flex-wrap:wrap; gap:24px;">
+        <div>
+          <span class="section-label">Our Properties</span>
+          <h2 class="section-heading">Featured<br/><em class="gold-text">Listings</em></h2>
+          <div class="divider"></div>
+        </div>
+        <a href="listings.html" class="btn-outline">
+          View All Properties
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(2,1fr); gap:32px;" class="reveal">
+
+        <!-- Property 1 -->
+        <a href="modern-apartment-stay.html" style="text-decoration:none; color:inherit; display:block; transition:transform .3s;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform=''">
+          <div style="aspect-ratio:4/3; overflow:hidden; border:1px solid var(--dark-border); margin-bottom:14px; position:relative;">
+            <img src="Screenshot-2025-06-01-121825-1.png" alt="Modern Apartment Stay" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform=''"/>
+            <div style="position:absolute;top:14px;left:14px;background:rgba(10,10,10,.85);border:1px solid var(--gold);backdrop-filter:blur(8px);padding:5px 12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">★ Guest Favourite</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;color:var(--white);">Honolulu, Oahu</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--white);">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              5.0
+            </span>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Entire apartment · 2 beds · 1 bath</div>
+          <div style="font-size:14px;font-weight:700;color:var(--white);">$195 <span style="font-size:12px;color:var(--text-muted);font-weight:400;">/ night</span></div>
+        </a>
+
+        <!-- Property 2 -->
+        <a href="modern-2bedroom-home-stay.html" style="text-decoration:none; color:inherit; display:block; transition:transform .3s;" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform=''">
+          <div style="aspect-ratio:4/3; overflow:hidden; border:1px solid var(--dark-border); margin-bottom:14px; position:relative;">
+            <img src="Screenshot-2025-06-01-112946-250x250.png" alt="Modern 2 Bedroom Home Stay" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseenter="this.style.transform='scale(1.04)'" onmouseleave="this.style.transform=''"/>
+            <div style="position:absolute;top:14px;left:14px;background:rgba(10,10,10,.85);border:1px solid var(--gold);backdrop-filter:blur(8px);padding:5px 12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">★ New Listing</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;color:var(--white);">Albany, NY</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--white);">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              5.0
+            </span>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Entire house · 2 beds · 1 bath</div>
+          <div style="font-size:14px;font-weight:700;color:var(--white);">$249 <span style="font-size:12px;color:var(--text-muted);font-weight:400;">/ night</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ SERVICES ═══ -->
   <section class="services" id="services">
     <div class="container">
       <div class="reveal">
         <span class="section-label">What We Offer</span>
-        <h2 class="section-heading">Full-Service STR<br/><em class="gold-text">Management</em></h2>
+        <h2 class="section-heading">Full-Service Rental<br/><em class="gold-text">Management</em></h2>
         <div class="divider"></div>
-        <p class="section-subtext">Everything you need to maximize your short-term rental income — handled from end to end by our expert team.</p>
+        <p class="section-subtext">Short-term, mid-term, or long-term — we manage your property at the level that works best for you, handling everything from end to end.</p>
       </div>
       <div class="services-grid">
         <div class="service-card featured reveal">
-          <div class="service-icon-wrap">🔑</div>
-          <div class="service-title">Airbnb Arbitrage Management</div>
-          <p class="service-desc">We master-lease your property on a 3–5 year agreement and sublease it to vetted corporate clients — giving you guaranteed rent, zero vacancy, and zero hassle.</p>
+          <div class="service-icon-wrap">⚡</div>
+          <div class="service-title">Short-Term Rentals</div>
+          <p class="service-desc">Maximize nightly revenue through Airbnb, VRBO, and Booking.com. We handle everything from dynamic pricing to guest communication — fully hands-off for you.</p>
           <ul class="service-features">
-            <li>3–5 year lease commitment</li>
-            <li>100% occupancy — we always pay rent</li>
-            <li>Complete unit furnishing & setup</li>
             <li>Multi-platform listing management</li>
+            <li>Dynamic pricing & revenue optimization</li>
+            <li>24/7 guest communication & support</li>
+            <li>Professional photography & staging</li>
           </ul>
         </div>
         <div class="service-card reveal" style="transition-delay:0.12s">
-          <div class="service-icon-wrap">🏡</div>
-          <div class="service-title">Property Owner Partnership</div>
-          <p class="service-desc">Our goal is to become your last tenant. We handle everything so your property is a truly passive investment — 100% occupancy, zero turnover, zero vacancy.</p>
+          <div class="service-icon-wrap">🏢</div>
+          <div class="service-title">Mid-Term Rentals</div>
+          <p class="service-desc">30-day+ stays for corporate clients, travel nurses, relocating professionals, and insurance housing. Stable income with less turnover than short-term rentals.</p>
           <ul class="service-features">
-            <li>Guaranteed minimum rent options</li>
-            <li>Insurance coverage up to $3M</li>
-            <li>24hr handyman — repairs under $500 on us</li>
-            <li>Professional cleaning 1–2x per week</li>
+            <li>Corporate & insurance housing placement</li>
+            <li>Travel nurse & relocation clients</li>
+            <li>3–5 year master lease agreements</li>
+            <li>Furnished & unfurnished options</li>
           </ul>
         </div>
         <div class="service-card reveal" style="transition-delay:0.24s">
-          <div class="service-icon-wrap">🛡️</div>
-          <div class="service-title">Property Protection & Security</div>
-          <p class="service-desc">Your property is protected around the clock. Strict house rules, thorough guest screening, and 24hr surveillance keep your asset in pristine condition at all times.</p>
+          <div class="service-icon-wrap">🏡</div>
+          <div class="service-title">Long-Term Rentals</div>
+          <p class="service-desc">Traditional 12-month leases with vetted, screened tenants. Predictable monthly income, full property management, and zero day-to-day involvement from you.</p>
           <ul class="service-features">
-            <li>24hr front, side & rear surveillance</li>
-            <li>Strict rules — no pets, no parties, no smoking</li>
-            <li>Advanced guest screening systems</li>
-            <li>Neighbor & community relationship management</li>
+            <li>Thorough tenant screening & placement</li>
+            <li>Lease preparation & management</li>
+            <li>Maintenance coordination</li>
+            <li>Monthly reporting & rent collection</li>
           </ul>
         </div>
         <div class="service-card reveal" style="transition-delay:0.36s">
-          <div class="service-icon-wrap">📈</div>
-          <div class="service-title">Revenue Optimization</div>
-          <p class="service-desc">Data-driven strategies to maximize your nightly rate, occupancy, and total monthly revenue — with full transparency every step of the way.</p>
+          <div class="service-icon-wrap">🛡️</div>
+          <div class="service-title">Property Protection & Security</div>
+          <p class="service-desc">Across all rental types — your property is protected. 24hr surveillance, $3M insurance coverage, strict house rules, and a 24hr handyman on standby.</p>
           <ul class="service-features">
-            <li>Dynamic pricing algorithms</li>
-            <li>Seasonal demand forecasting</li>
-            <li>Competitor benchmarking</li>
-            <li>Monthly performance reports</li>
+            <li>Insurance coverage up to $3M</li>
+            <li>24hr front, side & rear surveillance</li>
+            <li>24hr handyman — repairs under $500 on us</li>
+            <li>Advanced guest & tenant screening</li>
           </ul>
         </div>
       </div>
